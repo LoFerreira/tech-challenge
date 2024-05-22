@@ -32,40 +32,34 @@ class ProductController {
     }
   };
 
-  static updateProduct = (req: Request, res: Response) => {
+  static updateProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
-
-    products.findByIdAndUpdate(id, { $set: req.body }, (err: any) => {
-      if (!err) {
-        res.status(200).send({ message: "Product updated successfully." });
-      } else {
-        res.status(500).send({ message: err.message });
-      }
-    });
+    try {
+      await products.findByIdAndUpdate(id, { $set: req.body });
+      res.status(200).send({ message: "Product updated successfully." });
+    } catch (err: any) {
+      res.status(500).send({ message: err.message });
+    }
   };
 
-  static deleteProduct = (req: Request, res: Response) => {
+  static deleteProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
-
-    products.findByIdAndDelete(id, (err: any) => {
-      if (!err) {
-        res.status(200).send({ message: "Product deleted successfully." });
-      } else {
-        res.status(500).send({ message: err.message });
-      }
-    });
+    try {
+      await products.findByIdAndDelete(id);
+      res.status(200).send({ message: "Product deleted successfully." });
+    } catch (err: any) {
+      res.status(500).send({ message: err.message });
+    }
   };
 
-  static listProductByCategory = (req: Request, res: Response) => {
+  static listProductByCategory = async (req: Request, res: Response) => {
     const { category } = req.query;
-
-    products.find({ category }, {}, (err: any, products: any) => {
-      if (!err) {
-        res.status(200).send(products);
-      } else {
-        res.status(500).send({ message: err.message });
-      }
-    });
+    try {
+      const productsByCategory = await products.find({ category }, {});
+      res.status(200).send(productsByCategory);
+    } catch (err: any) {
+      res.status(500).send({ message: err.message });
+    }
   };
 }
 
