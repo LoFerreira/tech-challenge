@@ -2,8 +2,23 @@ import express, { Request, Response } from "express";
 import products from "../../../../domain/product/model";
 
 const router = express.Router();
-
 class ProductController {
+  /**
+   * @swagger
+   * /api/products:
+   *   post:
+   *     summary: Retrieve a list of products
+   *     description: Retrieve a list of products from the database
+   *     responses:
+   *       200:
+   *         description: A list of products
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: array
+   *               items:
+   *                 $ref: "../../../../domain/product/model.ts"
+   */
   static createProduct = async (req: Request, res: Response) => {
     let product = new products(req.body);
 
