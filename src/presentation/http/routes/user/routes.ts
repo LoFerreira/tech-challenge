@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import users from "../../../../domain/user/model";
+import validateCPF from "../../middleware/validateCPF";
 
 const router = express.Router();
 class UserController {
@@ -43,7 +44,7 @@ class UserController {
   };
 }
 
-router.get("/users/:cpf", UserController.getUserByCPF);
-router.post("/users", UserController.createUser);
+router.get("/users/:cpf", validateCPF, UserController.getUserByCPF);
+router.post("/users", validateCPF, UserController.createUser);
 
 export default router;
