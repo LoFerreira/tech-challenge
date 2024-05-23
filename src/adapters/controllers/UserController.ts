@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import cpfValidatorMiddleware from "../middleware/cpfValidator";
 import UserService from "../../domain/service/UserService"; // Importando o serviço
 
 const router = express.Router();
@@ -37,7 +38,7 @@ class UserController {
 
 /*DEFININDO OS ENDPOINTS*/
 
-router.get("/users/:cpf", UserController.getUserByCPF);
-router.post("/users", UserController.createUser);
+router.get("/users/:cpf", cpfValidatorMiddleware, UserController.getUserByCPF);
+router.post("/users", cpfValidatorMiddleware, UserController.createUser);
 
 export default router;
