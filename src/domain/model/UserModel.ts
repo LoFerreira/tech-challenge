@@ -26,8 +26,8 @@ import mongoose from "mongoose";
  *       example:
  *         id: d5fE_asz,
  *         name: Harry Potter and the Goblet of Fire,
-           email: emailtest123@gmail.com,
-           cpf: 00000000,
+ *         email: emailtest123@gmail.com,
+ *         cpf: 00000000,
  */
 
 const UserSchema = new mongoose.Schema({

@@ -34,10 +34,10 @@ import mongoose from "mongoose";
  *       example:
  *         id: d5fE_asz,
  *         name: Harry Potter and the Goblet of Fire,
-           category: lanche,
-           price: 0500,
-           description: First product test,
-           image: test,
+ *          category: lanche,
+ *          price: 0500,
+ *          description: First product test,
+ *          image: test,
  */
 
 const productSchema = new mongoose.Schema({
