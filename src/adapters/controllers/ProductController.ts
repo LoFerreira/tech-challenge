@@ -1,7 +1,5 @@
 import express, { Request, Response } from "express";
-import fs from "fs";
 import multer from "multer";
-import products from "../../domain/model/ProductModel";
 import ProductService from "../../domain/service/ProductService";
 
 const router = express.Router();
@@ -16,20 +14,14 @@ class ProductController {
     const imagePath = req?.file?.path || "";
 
     try {
-      const imageBase64 = fs.readFileSync(imagePath, { encoding: "base64" });
-      const imageDataUri = `data:${req?.file?.mimetype};base64,${imageBase64}`;
-
-      const newProduct = new products({
+      const newProduct = await ProductService.createProduct({
         name,
         category,
         price,
         description,
-        image: imageDataUri,
+        imagePath,
+        mimetype: req?.file?.mimetype,
       });
-
-      await newProduct.save();
-
-      fs.unlinkSync(imagePath);
 
       res.status(201).send(newProduct);
     } catch (error: any) {
@@ -44,26 +36,17 @@ class ProductController {
     const imagePath = req?.file?.path || "";
 
     try {
-      const product = await products.findById(id);
-      if (!product) {
-        return res.status(404).send({ message: "Product not found" });
-      }
+      const response = await ProductService.updateProduct({
+        id,
+        name,
+        category,
+        price,
+        description,
+        imagePath,
+        mimetype: req?.file?.mimetype,
+      });
 
-      if (imagePath) {
-        const imageBase64 = fs.readFileSync(imagePath, { encoding: "base64" });
-        const imageDataUri = `data:${req?.file?.mimetype};base64,${imageBase64}`;
-        product.image = imageDataUri;
-        fs.unlinkSync(imagePath);
-      }
-
-      product.name = name || product.name;
-      product.category = category || product.category;
-      product.price = price || product.price;
-      product.description = description || product.description;
-
-      await product.save();
-
-      res.status(200).send(product);
+      res.status(200).send(response);
     } catch (error: any) {
       res.status(500).send({ message: error?.message });
     }
