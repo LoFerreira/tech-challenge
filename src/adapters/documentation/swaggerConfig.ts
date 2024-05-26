@@ -19,7 +19,10 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["../controllers/*/*.ts", "../domain/model/*/*.ts"], // Path to your API route files
+  apis: [
+    "./src/adapters/documentation/swaggerEndpoints/**.yml",
+    "./src/adapters/documentation/swaggerModels/**.yml",
+  ], // Path to your API route files
 };
 
 const specs = swaggerJsdoc(swaggerOptions);
