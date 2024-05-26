@@ -8,6 +8,7 @@ class OrderService {
         user: userId,
         status: "OPENED",
         createdAt: new Date(),
+        payment: "PENDING",
       });
 
       const savedOrder = await newOrder.save();
@@ -17,17 +18,55 @@ class OrderService {
     }
   }
 
-  /*[ATUALIZA ORDER]*/
+  /*[ADICIONAR PRODUTOS ORDER]*/
   static async addProductsToOrder({ orderId, productIds }) {
     try {
-      const updatedOrder = await Order.findByIdAndUpdate(
-        orderId,
-        { $push: { orderProducts: { $each: productIds } } },
-        { new: true }
-      );
+      const order = await Order.findById(orderId);
+
+      if (!order) {
+        throw new Error("Order not found");
+      }
+
+      productIds.forEach((productId) => {
+        const existingProduct = order.orderProducts.find(
+          (orderProduct) => orderProduct?.product?.toString() === productId
+        );
+
+        if (existingProduct) {
+          existingProduct.quantity += 1;
+        } else {
+          order.orderProducts.push({ product: productId, quantity: 1 });
+        }
+      });
+
+      const updatedOrder = await order.save();
       return updatedOrder;
     } catch (err: any) {
       throw new Error(`Failed to add products to order: ${err.message}`);
+    }
+  }
+
+  /*[CONFIRMAR ORDER]*/
+  static async confirmOrder({ orderId, status, payment }) {
+    try {
+      const order = await Order.findById(orderId);
+
+      if (!order) {
+        throw new Error("Order not found");
+      }
+
+      if (!order.orderProducts || order.orderProducts.length === 0) {
+        throw new Error("Order has no products");
+      }
+
+      order.status = status;
+      order.payment = payment;
+
+      const updatedOrder = await order.save();
+
+      return updatedOrder;
+    } catch (err: any) {
+      throw new Error(`Failed to confirm order: ${err.message}`);
     }
   }
 

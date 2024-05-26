@@ -9,11 +9,12 @@ const orderSchema = new mongoose.Schema({
   },
   orderProducts: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "products",
+      product: { type: mongoose.Schema.Types.ObjectId, ref: "products" },
+      quantity: { type: Number, required: true, default: 1 },
     },
   ],
   status: { type: String, required: true },
+  payment: { type: String, required: true },
   createdAt: { type: Date, required: true, default: Date.now() },
 });
 

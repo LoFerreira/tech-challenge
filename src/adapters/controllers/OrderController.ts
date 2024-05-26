@@ -17,7 +17,7 @@ class OrderController {
     }
   };
 
-  /*[ATUALIZAR ORDER]*/
+  /*[ADICIONAR PRODUTOS ORDER]*/
   static addProductsToOrder = async (req: Request, res: Response) => {
     const { orderId } = req.params;
     const { productIds } = req.body;
@@ -30,6 +30,23 @@ class OrderController {
       const updatedOrder = await OrderService.addProductsToOrder({
         orderId,
         productIds,
+      });
+      res.status(200).send(updatedOrder);
+    } catch (err: any) {
+      res.status(500).send({ message: err.message });
+    }
+  };
+
+  /*[CONFIRMAR ORDER]*/
+  static confirmOrder = async (req: Request, res: Response) => {
+    const { orderId } = req.params;
+    const { status, payment } = req.body;
+
+    try {
+      const updatedOrder = await OrderService.confirmOrder({
+        orderId,
+        status,
+        payment,
       });
       res.status(200).send(updatedOrder);
     } catch (err: any) {
@@ -62,6 +79,7 @@ class OrderController {
 router.get("/orders", OrderController.getOrders);
 router.get("/orders/status", OrderController.listOrderByStatus);
 router.put("/orders/:orderId", OrderController.addProductsToOrder);
+router.put("/orders/:orderId/confirm", OrderController.confirmOrder);
 router.post("/orders", OrderController.createOrder);
 // router.put("/orders/:id", OrderController.updateBook);
 // router.delete("/orders/:id", OrderController.deleteBook);
