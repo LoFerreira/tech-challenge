@@ -77,6 +77,16 @@ class ProductService {
     }
   }
 
+  /*[BUSCA PRODUTO PELO ID]*/
+  static async getProductByID(id: string) {
+    try {
+      const product = await Product.findById(id);
+      return product;
+    } catch (err: any) {
+      throw new Error(err.message);
+    }
+  }
+
   /*[LISTA POR CATEGORIA PRODUTOS]*/
   static async listProductsByCategory(category: string) {
     try {

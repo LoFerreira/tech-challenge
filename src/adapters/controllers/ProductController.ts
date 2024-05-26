@@ -63,6 +63,17 @@ class ProductController {
     }
   };
 
+  /*[BUSCA PRODUTO PELO ID]*/
+  static getProductById = async (req: Request, res: Response) => {
+    const { productId } = req.params;
+    try {
+      const product = await ProductService.getProductByID(String(productId));
+      res.status(200).send(product);
+    } catch (err: any) {
+      res.status(500).send({ message: err.message });
+    }
+  };
+
   /*[LISTAR PRODUTOS POR CATEGORIA PRODUTO]*/
   static listProductByCategory = async (req: Request, res: Response) => {
     const { category } = req.params;
@@ -78,7 +89,11 @@ class ProductController {
 }
 
 /*[DEFININDO ENDPOINTS DE PRODUTO]*/
-router.get("/products/:category", ProductController.listProductByCategory);
+router.get("/products/:productId", ProductController.getProductById);
+router.get(
+  "/products/category/:category",
+  ProductController.listProductByCategory
+);
 router.post(
   "/products",
   upload.single("image"),

@@ -1,5 +1,5 @@
 paths:
-  /products/{category}:
+  /products/category/{category}:
     get:
       summary: List products by category
       parameters:

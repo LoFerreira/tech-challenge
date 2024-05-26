@@ -19,7 +19,7 @@ class UserController {
     }
   };
 
-  /*[BUSCA USUÁRIO PELO CPF : FROM QUERY] */
+  /*[BUSCA USUÁRIO PELO CPF : FROM PARAMS] */
   static getUserByCPF = async (req: Request, res: Response) => {
     const { cpf } = req.params;
     try {
