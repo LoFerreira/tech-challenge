@@ -80,7 +80,7 @@ class OrderService {
   }
 
   /*[LISTA POR STATUS ORDERS]*/
-  static async listOrdersByStatus(status: string[]) {
+  static async getOrdersByStatus(status: string[]) {
     try {
       return await Order.find({ status: { $in: status } }).populate(
         "user orderProducts"

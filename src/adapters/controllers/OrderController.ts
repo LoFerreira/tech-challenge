@@ -65,10 +65,11 @@ class OrderController {
   };
 
   /*[LISTAR ORDERS POR STATUS ORDER]*/
-  static listOrderByStatus = async (req: Request, res: Response) => {
-    const { status } = req.body;
+  static getOrderByStatus = async (req: Request, res: Response) => {
+    const { status } = req.query;
+
     try {
-      const ordersByStatus = await OrderService.listOrdersByStatus(status);
+      const ordersByStatus = await OrderService.getOrdersByStatus(status);
       res.status(200).send(ordersByStatus);
     } catch (err: any) {
       res.status(500).send({ message: err.message });
@@ -77,11 +78,9 @@ class OrderController {
 }
 
 router.get("/orders", OrderController.getOrders);
-router.get("/orders/status", OrderController.listOrderByStatus);
+router.get("/orders/status", OrderController.getOrderByStatus);
 router.put("/orders/:orderId", OrderController.addProductsToOrder);
 router.put("/orders/:orderId/confirm", OrderController.confirmOrder);
 router.post("/orders", OrderController.createOrder);
-// router.put("/orders/:id", OrderController.updateBook);
-// router.delete("/orders/:id", OrderController.deleteBook);
 
 export default router;
