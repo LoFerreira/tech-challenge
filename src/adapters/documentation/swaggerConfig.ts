@@ -20,7 +20,7 @@ const swaggerOptions = {
     ],
   },
   apis: [
-    "./src/adapters/documentation/swaggerEndpoints/**.yml",
+    "./src/adapters/documentation/swaggerEndpoints/*/**.yml",
     "./src/adapters/documentation/swaggerModels/**.yml",
   ], // Path to your API route files
 };
