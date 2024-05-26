@@ -1,5 +1,5 @@
 import { cpf as CPFValidator } from "cpf-cnpj-validator";
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 
 const validateCPF = (req: Request, res: Response, next: NextFunction) => {
   let cpf = "";
@@ -7,8 +7,8 @@ const validateCPF = (req: Request, res: Response, next: NextFunction) => {
   // Extraindo o CPF do corpo ou da query da requisição
   if (req.body && req.body.cpf) {
     cpf = req.body.cpf;
-  } else if (req.query && req.query.cpf) {
-    cpf = req.query.cpf as string;
+  } else if (req.params && req.params.cpf) {
+    cpf = req.params.cpf as string;
   }
 
   // Verificando se o CPF foi fornecido

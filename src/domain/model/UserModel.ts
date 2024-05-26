@@ -1,35 +1,5 @@
 import mongoose from "mongoose";
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       required:
- *         - name
- *         - email
- *         - cpf
- *       properties:
- *         id:
- *           type: string
- *           description: The auto-generated id of the user
- *         name:
- *           type: string
- *           description: The name of the user
- *         email:
- *           type: string
- *           description: The email of the user
- *         cpf:
- *           type: string
- *           description: The cpf of the user
- *       example:
- *         id: d5fE_asz,
- *         name: Harry Potter and the Goblet of Fire,
- *         email: emailtest123@gmail.com,
- *         cpf: 00000000,
- */
-
 const UserSchema = new mongoose.Schema({
   id: { type: "String" },
   name: { type: "String", required: true },
