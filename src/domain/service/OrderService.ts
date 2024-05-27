@@ -73,7 +73,9 @@ class OrderService {
   /*[LISTA ORDERS]*/
   static async getOrders() {
     try {
-      return await Order.find({}).populate("user orderProducts");
+      return await Order.find({})
+        .populate("user")
+        .populate("orderProducts.product");
     } catch (err: any) {
       throw new Error(err.message);
     }
@@ -82,9 +84,9 @@ class OrderService {
   /*[LISTA POR STATUS ORDERS]*/
   static async getOrdersByStatus(status: string[]) {
     try {
-      return await Order.find({ status: { $in: status } }).populate(
-        "user orderProducts"
-      );
+      return await Order.find({ status: { $in: status } })
+        .populate("user")
+        .populate("orderProducts.product");
     } catch (err: any) {
       throw new Error(err.message);
     }
