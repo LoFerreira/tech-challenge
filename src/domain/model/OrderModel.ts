@@ -1,11 +1,23 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const orderSchema = new mongoose.Schema({
   id: { type: String },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    type: Schema.Types.String,
     required: true,
+    validate: {
+      validator: async function (v) {
+        if (v === "unidentified") {
+          return true;
+        }
+        return (
+          mongoose.isValidObjectId(v) &&
+          (await mongoose.model("User").findById(v))
+        );
+      },
+      message: (props) =>
+        `${props.value} is not a valid user ID or 'unidentified' string!`,
+    },
   },
   orderProducts: [
     {

@@ -6,9 +6,10 @@ class OrderController {
   /*[CRIAR ORDER]*/
   static createOrder = async (req: Request, res: Response) => {
     const { userId } = req.body;
+    const user = userId === "unidentified" ? "unidentified" : userId;
     try {
       const newOrder = await OrderService.createOrder({
-        userId,
+        user,
       });
 
       res.status(201).send(newOrder);

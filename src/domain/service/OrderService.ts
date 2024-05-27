@@ -1,18 +1,24 @@
+import mongoose from "mongoose";
 import Order from "../model/OrderModel";
 
 class OrderService {
   /*[CRIAR ORDER]*/
-  static async createOrder({ userId }) {
+  static async createOrder({ user }) {
     try {
       const newOrder = new Order({
-        user: userId,
+        user,
         status: "OPENED",
         createdAt: new Date(),
         payment: "PENDING",
       });
 
-      const savedOrder = await newOrder.save();
-      return savedOrder.toJSON();
+      await newOrder.save();
+
+      if (mongoose.isValidObjectId(newOrder.user)) {
+        await newOrder.populate("user").execPopulate();
+      }
+
+      return newOrder;
     } catch (err: any) {
       throw new Error(`Failed to create Order: ${err.message}`);
     }
