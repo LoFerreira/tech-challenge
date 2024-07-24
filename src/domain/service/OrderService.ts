@@ -1,54 +1,39 @@
-import mongoose from "mongoose";
 import Order from "../model/OrderModel";
+import User from "../model/UserModel";
 
 class OrderService {
-  /*[CRIAR ORDER]*/
-  static async createOrder({ user }) {
+  /*[CHECKOUT ORDER]*/
+  static async createOrder({ userCpf, products }) {
     try {
+      let isUserIdentified = true;
+
+      if (userCpf === null) {
+        isUserIdentified = false;
+      }
+
+      const user = isUserIdentified
+        ? await User.findOne({ cpf: userCpf })
+        : { _id: "unidentified" };
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
       const newOrder = new Order({
-        user,
+        user: user._id,
         status: "OPENED",
+        orderProducts: products,
         createdAt: new Date(),
         payment: "PENDING",
       });
 
       await newOrder.save();
+      await newOrder.populate("user");
+      await newOrder.populate("orderProducts.product");
 
-      if (mongoose.isValidObjectId(newOrder.user)) {
-        await newOrder.populate("user").execPopulate();
-      }
-
-      return newOrder;
+      return { "Número de identificação do pedido": newOrder?._id };
     } catch (err: any) {
       throw new Error(`Failed to create Order: ${err.message}`);
-    }
-  }
-
-  /*[ADICIONAR PRODUTOS ORDER]*/
-  static async addProductsToOrder({ orderId, productIds }) {
-    try {
-      const order = await Order.findById(orderId);
-
-      if (!order) {
-        throw new Error("Order not found");
-      }
-
-      productIds.forEach((productId) => {
-        const existingProduct = order.orderProducts.find(
-          (orderProduct) => orderProduct?.product?.toString() === productId
-        );
-
-        if (existingProduct) {
-          existingProduct.quantity += 1;
-        } else {
-          order.orderProducts.push({ product: productId, quantity: 1 });
-        }
-      });
-
-      const updatedOrder = await order.save();
-      return updatedOrder;
-    } catch (err: any) {
-      throw new Error(`Failed to add products to order: ${err.message}`);
     }
   }
 
@@ -88,7 +73,7 @@ class OrderService {
   }
 
   /*[LISTA POR STATUS ORDERS]*/
-  static async getOrdersByStatus(status: string[]) {
+  static async getOrdersByStatus(status: any) {
     try {
       return await Order.find({ status: { $in: status } })
         .populate("user")

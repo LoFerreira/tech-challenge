@@ -5,36 +5,21 @@ const router = express.Router();
 class OrderController {
   /*[CRIAR ORDER]*/
   static createOrder = async (req: Request, res: Response) => {
-    const { userId } = req.body;
-    const user = userId === "unidentified" ? "unidentified" : userId;
+    const { userCpf, products } = req.body;
+
+    if (!Array.isArray(products)) {
+      return res.status(400).send({ message: "products must be an array" });
+    }
+
     try {
       const newOrder = await OrderService.createOrder({
-        user,
+        userCpf,
+        products,
       });
 
       res.status(201).send(newOrder);
     } catch (error: any) {
       res.status(500).send({ message: error?.message });
-    }
-  };
-
-  /*[ADICIONAR PRODUTOS ORDER]*/
-  static addProductsToOrder = async (req: Request, res: Response) => {
-    const { orderId } = req.params;
-    const { productIds } = req.body;
-
-    if (!Array.isArray(productIds)) {
-      return res.status(400).send({ message: "productIds must be an array" });
-    }
-
-    try {
-      const updatedOrder = await OrderService.addProductsToOrder({
-        orderId,
-        productIds,
-      });
-      res.status(200).send(updatedOrder);
-    } catch (err: any) {
-      res.status(500).send({ message: err.message });
     }
   };
 

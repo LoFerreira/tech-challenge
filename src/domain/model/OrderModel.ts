@@ -12,7 +12,7 @@ const orderSchema = new mongoose.Schema({
         }
         return (
           mongoose.isValidObjectId(v) &&
-          (await mongoose.model("User").findById(v))
+          (await mongoose.model("users").findById(v))
         );
       },
       message: (props) =>
