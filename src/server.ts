@@ -5,7 +5,7 @@ import db from "../src/infrastructure/database/MongoDB";
 import swaggerSpecs from "./adapters/documentation/swaggerConfig";
 import routes from "./routes/index";
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 2019;
 
 db.on("error", console.log.bind(console, "Database Error"));
 db.once("open", () => console.log("Database is running"));
