@@ -65,7 +65,6 @@ class OrderController {
 
 router.get("/orders", OrderController.getOrders);
 router.get("/orders/status", OrderController.getOrderByStatus);
-//router.put("/orders/:orderId", OrderController.addProductsToOrder);
 router.put("/orders/:orderId/confirm", OrderController.confirmOrder);
 router.post("/orders", OrderController.createOrder);
 
