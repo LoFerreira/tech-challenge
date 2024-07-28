@@ -17,6 +17,7 @@ spec:
       containers:
       - name: tech-challenge-container
         image: leonardo10sp/tech-challenge:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         resources:
@@ -38,3 +39,4 @@ spec:
             port: 80
           initialDelaySeconds: 5
           periodSeconds: 5
+      restartPolicy: Always

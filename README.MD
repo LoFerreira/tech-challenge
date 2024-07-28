@@ -118,3 +118,57 @@ Certifique-se de ter as seguintes ferramentas instaladas:
      (opcionais)
    - kubectl get pods
    - minikube service tech-challenge-service --url
+
+
+### Instalação e Configuração do AWS
+
+
+## Instalando
+- msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2.msi
+
+# configurando o aws na sua máquina (terminal da máquina)
+
+- aws configure
+#### Você preencherá nessa sequência
+
+SUA_KEY
+SUA_SECRET_KEY
+Default region name: us-east-1
+Default output format: json
+
+- Mostrar usuário AWS: aws iam get-user
+
+### Instalação e Configuração do EKSCTL
+
+## Instalando eksctl (terminal da máquina)
+ - curl -o eksctl.zip https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_Windows_amd64.zip
+ - Expand-Archive -Path ~\Downloads\eksctl_Windows_amd64.zip -DestinationPath ~\Downloads\eksctl  
+
+ - mkdir "C:\Program Files\eksctl"
+ - Move-Item -Path ~\Downloads\eksctl\eksctl.exe -Destination "C:\Program Files\eksctl\eksctl.exe"
+
+## Configurando variável de ambiente eksctl (terminal da máquina)
+
+- $env:PATH += ";C:\Program Files\eksctl"
+- eksctl version
+- eksctl help
+
+
+## Criando clusters
+
+eksctl create cluster --name tech-challenge-cluster --region us-east-1 --nodes 3
+
+## Atualizando clusters
+aws eks --region us-east-1 update-kubeconfig --name tech-challenge-cluster
+
+
+## Por fim, na raiz do projeto
+
+kubectl apply -f deployments/deployment.yaml
+kubectl apply -f deployments/service.yaml
+
+## Visualizar nodes ou pods
+
+kubectl get nodes
+kubectl get pods
+
