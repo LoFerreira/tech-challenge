@@ -45,7 +45,7 @@ class OrderController {
     }
   };
 
-  /*[LISTAR ORDERS POR STATUS ORDER]*/
+  /*[LISTAR ORDERS POR STATUS]*/
   static getOrderByStatus = async (req: Request, res: Response) => {
     const { status } = req.query;
 

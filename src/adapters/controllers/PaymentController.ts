@@ -29,7 +29,7 @@ class PaymentController {
       const response = await PaymentService.createPixPayment(order);
 
       return res.status(201).json(response);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erro ao processar pagamento:", error);
       return res.status(500).json({ error: error.message });
     }

@@ -19,7 +19,7 @@ class PaymentService {
       const response = await payment.create({
         body: {
           transaction_amount: 0.1,
-          description: `Pagamento do pedido ${order.id}`,
+          description: `Pagamento do pedido ${order._id}`,
           payment_method_id: "pix",
           payer: {
             email: order.user.email,
@@ -31,11 +31,11 @@ class PaymentService {
           },
           notification_url: this.webhookUrl,
         },
-        requestOptions: { idempotencyKey: order?.id },
+        requestOptions: { idempotencyKey: order?._id },
       });
 
       return response;
-    } catch (error) {
+    } catch (error: any) {
       console.error(
         "Erro ao criar pagamento PIX:",
         error.response ? error.response.data : error.message
