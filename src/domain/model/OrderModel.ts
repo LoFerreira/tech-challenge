@@ -1,9 +1,10 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
   id: { type: String },
   user: {
-    type: Schema.Types.String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
     required: true,
     validate: {
       validator: async function (v) {
@@ -26,6 +27,7 @@ const orderSchema = new mongoose.Schema({
     },
   ],
   status: { type: String, required: true },
+  totalAmount: { type: Number, default: 0 },
   payment: { type: String, required: true },
   createdAt: { type: Date, required: true, default: Date.now() },
 });

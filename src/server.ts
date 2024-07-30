@@ -1,8 +1,10 @@
 import "dotenv/config";
 import express from "express";
+import ngrok from "ngrok";
 import swaggerUi from "swagger-ui-express";
 import db from "../src/infrastructure/database/MongoDB";
 import swaggerSpecs from "./adapters/documentation/swaggerConfig";
+import PaymentService from "./domain/service/PaymentService";
 import routes from "./routes/index";
 
 const port = process.env.PORT || 2019;
@@ -19,9 +21,13 @@ app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 app.get("/", (req, res) => res.send("Server is running!"));
 app.use(express.json());
 
-app.listen(port, () =>
-  console.log(`Server Running at http://localhost:${port}`)
-);
+app.listen(port, async () => {
+  const ngrokUrl = await ngrok.connect(Number(port));
+  PaymentService.setWebhookUrl(`${ngrokUrl}/webhook`);
+
+  console.log(`ngrok URL: ${ngrokUrl}`);
+  console.log(`Server Running at http://localhost:${port}`);
+});
 
 routes(app);
 

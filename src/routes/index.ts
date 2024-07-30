@@ -1,5 +1,6 @@
 import express from "express";
 import orders from "../adapters/controllers/OrderController";
+import payments from "../adapters/controllers/PaymentController";
 import products from "../adapters/controllers/ProductController";
 import users from "../adapters/controllers/UserController";
 
@@ -10,7 +11,7 @@ const routes = (app: any) => {
   });
 
   // Definição das rotas de produtos e usuários
-  app.use(express.json(), products, users, orders);
+  app.use(express.json(), products, users, orders, payments);
 };
 
 export default routes;

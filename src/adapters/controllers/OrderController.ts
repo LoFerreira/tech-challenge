@@ -23,18 +23,13 @@ class OrderController {
     }
   };
 
-  /*[CONFIRMAR ORDER]*/
-  static confirmOrder = async (req: Request, res: Response) => {
-    const { orderId } = req.params;
-    const { status, payment } = req.body;
-
+  /*[CONSULTAR STATUS DO PAGAMENTO DO PEDIDO]*/
+  static getOrderPaymentStatus = async (req: Request, res: Response) => {
+    const { orderId } = req.query;
+    console.log(orderId);
     try {
-      const updatedOrder = await OrderService.confirmOrder({
-        orderId,
-        status,
-        payment,
-      });
-      res.status(200).send(updatedOrder);
+      const response = await OrderService.getOrderPaymentStatus(orderId);
+      res.status(200).send(response);
     } catch (err: any) {
       res.status(500).send({ message: err.message });
     }
@@ -65,7 +60,7 @@ class OrderController {
 
 router.get("/orders", OrderController.getOrders);
 router.get("/orders/status", OrderController.getOrderByStatus);
-router.put("/orders/:orderId/confirm", OrderController.confirmOrder);
+router.get("/order/payment/status", OrderController.getOrderPaymentStatus);
 router.post("/orders", OrderController.createOrder);
 
 export default router;

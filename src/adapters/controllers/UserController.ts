@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import UserService from "../../domain/service/UserService"; // Importando o serviço
-import cpfValidatorMiddleware from "../middleware/cpfValidator";
 
 const router = express.Router();
 
@@ -10,6 +9,7 @@ class UserController {
   static createUser = async (req: Request, res: Response) => {
     try {
       // Chamando o método do serviço para criar um usuário
+      console.log(req.body);
       const savedUser = await UserService.createUser(req.body);
       res.status(201).send(savedUser);
     } catch (err: any) {
@@ -37,7 +37,7 @@ class UserController {
 
 /*DEFININDO OS ENDPOINTS*/
 
-router.get("/users/:cpf", cpfValidatorMiddleware, UserController.getUserByCPF);
-router.post("/users", cpfValidatorMiddleware, UserController.createUser);
+router.get("/users/:cpf", UserController.getUserByCPF);
+router.post("/users", UserController.createUser);
 
 export default router;

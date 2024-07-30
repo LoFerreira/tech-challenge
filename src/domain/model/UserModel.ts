@@ -7,12 +7,12 @@ const UserSchema = new mongoose.Schema({
   cpf: {
     type: String,
     required: true,
-    validate: {
-      validator: function (v) {
-        return /^\d{11}$/.test(v); // Ensures the CPF is exactly 11 digits
-      },
-      message: (props) => `${props.value} is not a valid CPF number!`,
-    },
+    // validate: {
+    //   validator: function (v) {
+    //     return /^\d{11}$/.test(v); // Ensures the CPF is exactly 11 digits
+    //   },
+    //   message: (props) => `${props.value} is not a valid CPF number!`,
+    // },
     unique: true,
   },
 });
