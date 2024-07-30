@@ -20,7 +20,7 @@ root-project/
 │   │
 │   ├── domain/
 │   │   ├── model/
-│   │   └── middleware   
+│   │   └── service   
 │   │
 │   ├── infrastructure/
 │   │   ├── cloud_services/
