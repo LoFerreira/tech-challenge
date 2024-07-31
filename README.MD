@@ -8,9 +8,15 @@ Projeto em desenvolvimento conforme progresso da pós-graduação da FIAP - Soft
 - Robert Alves do Anjos [rm353529]
   <br /><br />
 
-## Endpoints
+## Links
 
-Postman invite link: https://app.getpostman.com/join-team?invite_code=fbd076935fee97ec62555f1837032175&target_code=ee3d3de9b5097fa6b0cf8d1f6e3a59ca
+- [SWAGGER] : http://localhost:2019/swagger/
+- [NOTION] : https://www.notion.so/FAST-FOOD-SYSTEM-f96fe451104340b29864b4611d3e348c
+- [MIRO] : https://miro.com/welcomeonboard/bmxDZjE3SGdwYXVHTGpRT0MxMVgyU1gwNUZjNUliODluM1BIRnkxUjhKMXp0SzNNY3dhWkI2WnhCWmxoNnBHUnwzNDU4NzY0NTg1NDEwMDQzNjMyfDI=?share_link_id=781584269137
+- [DOCKER IMAGE] : https://hub.docker.com/r/leonardo10sp/tech-challenge
+- [POSTMAN INVITE] : https://app.getpostman.com/join-team?invite_code=fbd076935fee97ec62555f1837032175&target_code=ee3d3de9b5097fa6b0cf8d1f6e3a59ca
+
+## Endpoints
 
 ### Users:
 
@@ -118,13 +124,6 @@ body: {
   exemplo: <br />
   url: http://localhost:3000/orders<br />
   <br />
-
-## Links
-
-- [SWAGGER] : http://localhost:2019/swagger/
-- [NOTION] : https://www.notion.so/FAST-FOOD-SYSTEM-f96fe451104340b29864b4611d3e348c
-- [MIRO] : https://miro.com/welcomeonboard/bmxDZjE3SGdwYXVHTGpRT0MxMVgyU1gwNUZjNUliODluM1BIRnkxUjhKMXp0SzNNY3dhWkI2WnhCWmxoNnBHUnwzNDU4NzY0NTg1NDEwMDQzNjMyfDI=?share_link_id=781584269137
-- [DOCKER IMAGE] : https://hub.docker.com/r/leonardo10sp/tech-challenge
 
 ## Kubernetes Deployment
 
