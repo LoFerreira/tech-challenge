@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import UserService from "../../domain/service/UserService"; // Importando o serviço
+import { userService } from "../../config/dependencyInjection"; // Importando a instância do serviço
 
 const router = express.Router();
 
@@ -9,8 +9,7 @@ class UserController {
   static createUser = async (req: Request, res: Response) => {
     try {
       // Chamando o método do serviço para criar um usuário
-      console.log(req.body);
-      const savedUser = await UserService.createUser(req.body);
+      const savedUser = await userService.createUser(req.body);
       res.status(201).send(savedUser);
     } catch (err: any) {
       res
@@ -27,7 +26,7 @@ class UserController {
         throw new Error("CPF must be a string");
       }
       // Chamando o método do serviço para encontrar usuários por CPF
-      const usersByCPF = await UserService.getUserByCPF(cpf);
+      const usersByCPF = await userService.getUserByCPF(cpf);
       res.status(200).send(usersByCPF);
     } catch (err: any) {
       res.status(500).send({ message: err.message });

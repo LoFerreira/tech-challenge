@@ -4,8 +4,8 @@ import ngrok from "ngrok";
 import swaggerUi from "swagger-ui-express";
 import db from "../src/infrastructure/database/MongoDB";
 import swaggerSpecs from "./adapters/documentation/swaggerConfig";
-import PaymentService from "./domain/service/PaymentService";
 import routes from "./routes/index";
+import PaymentService from "./application/services/PaymentService";
 
 const port = process.env.PORT || 2019;
 
