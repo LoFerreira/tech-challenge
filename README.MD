@@ -98,6 +98,18 @@ body: {
 }
 ```
 
+- [POST] _/order/{orderId}/status}_ <br />
+  exemplo: <br />
+  url: http://localhost:3000/order/66a969770d6ec4b096cfd7b1/status<br />
+
+```
+body: {
+    "status": "PREPARING"
+}
+
+status = "OPENED" | "RECEIVED" | "PREPARING" | "DONE" | "FINISHED" | "CANCELED"
+```
+
 - [GET] _/orders/status_ <br />
   exemplo: <br />
   url: http://localhost:3000/orders/status?status=OPENED<br />

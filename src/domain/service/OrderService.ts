@@ -75,6 +75,31 @@ class OrderService {
     }
   }
 
+  /*[ATUALIZAR STATUS DO PEDIDO]*/
+  static async updateOrderStatus({
+    orderId,
+    status,
+  }: {
+    orderId: number;
+    status: string;
+  }) {
+    try {
+      const order = await Order.findByIdAndUpdate(
+        orderId,
+        { status },
+        { new: true, runValidators: true }
+      );
+
+      if (!order) {
+        throw new Error("Order not found");
+      }
+
+      return order;
+    } catch (error: any) {
+      throw new Error(`Error updating order status: ${error.message}`);
+    }
+  }
+
   /*[LISTA ORDERS]*/
   static async getOrders() {
     try {

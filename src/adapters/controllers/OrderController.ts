@@ -56,11 +56,27 @@ class OrderController {
       res.status(500).send({ message: err.message });
     }
   };
+
+  static async updateOrderStatus(req, res) {
+    const orderId = req.params.id;
+    const { status } = req.body;
+
+    try {
+      const order = await OrderService.updateOrderStatus({ orderId, status });
+      return res
+        .status(200)
+        .json({ message: "Order status updated successfully", order });
+    } catch (error: any) {
+      console.error("Error updating order status:", error);
+      return res.status(500).json({ error: error.message });
+    }
+  }
 }
 
 router.get("/orders", OrderController.getOrders);
 router.get("/orders/status", OrderController.getOrderByStatus);
 router.get("/order/payment/status", OrderController.getOrderPaymentStatus);
 router.post("/orders", OrderController.createOrder);
+router.put("/order/:id/status", OrderController.updateOrderStatus);
 
 export default router;
