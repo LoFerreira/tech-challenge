@@ -10,15 +10,18 @@ Projeto em desenvolvimento conforme progresso da pós-graduação da FIAP - Soft
 
 ## Links
 
+- [YOUTUBE] : https://youtu.be/a_2wD4GU-P4
 - [SWAGGER] : http://localhost:2019/swagger/
 - [NOTION] : https://www.notion.so/FAST-FOOD-SYSTEM-f96fe451104340b29864b4611d3e348c
 - [MIRO] : https://miro.com/welcomeonboard/bmxDZjE3SGdwYXVHTGpRT0MxMVgyU1gwNUZjNUliODluM1BIRnkxUjhKMXp0SzNNY3dhWkI2WnhCWmxoNnBHUnwzNDU4NzY0NTg1NDEwMDQzNjMyfDI=?share_link_id=781584269137
 - [DOCKER IMAGE] : https://hub.docker.com/r/leonardo10sp/tech-challenge
 - [POSTMAN INVITE] : https://app.getpostman.com/join-team?invite_code=fbd076935fee97ec62555f1837032175&target_code=ee3d3de9b5097fa6b0cf8d1f6e3a59ca
 
-## Endpoints
+<br />
 
-### Users:
+# Endpoints
+
+## Users:
 
 - [POST] _/users_ <br />
   exemplo: <br />
@@ -34,8 +37,9 @@ body: {
 
 - [GET] _/users/{cpf}_ <br />
   exemplo: http://localhost:3000/users/12345678909
+  <br /><br /><br />
 
-### Products:
+## Products:
 
 - [POST] _/products_ <br />
   exemplo: <br />
@@ -72,7 +76,7 @@ category = "lanche" | "acompanhamento" | "bebida" | "sobremesa"
   url: http://localhost:3000/products/66a1758bf5c6fac16f138b77<br />
   <br /><br />
 
-  ### Orders:
+  ## Orders:
 
 - [POST] _/orders_ <br />
   exemplo: <br />
