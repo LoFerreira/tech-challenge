@@ -79,13 +79,18 @@ class OrderService {
   static async getOrders() {
     try {
       const statusOrder = {
-        pronto: 1,
-        "em preparação": 2,
-        recebido: 3,
+        OPENED: 0,
+        RECEIVED: 1,
+        PREPARING: 2,
+        DONE: 3,
+        FINISHED: 4,
+        CANCELED: 5,
       };
 
       // Fetch the orders, filter out "finalizado" status, and populate the necessary fields
-      let orders = await Order.find({ status: { $ne: "finalizado" } })
+      let orders = await Order.find({
+        status: { $nin: ["OPENED", "FINISHED", "CANCELED"] },
+      })
         .populate("user")
         .populate("orderProducts.product")
         .lean(); // Use lean() to get plain JavaScript objects

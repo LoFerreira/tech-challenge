@@ -48,11 +48,21 @@ class PaymentController {
         const paymentDetails = await fetchPaymentDetails(paymentId);
 
         const orderId = paymentDetails.external_reference;
-        const orderStatus = mapPaymentStatusToOrderStatus(
+        const orderPaymentStatus = mapPaymentStatusToOrderStatus(
           paymentDetails.status
         );
+        let orderStatus = "OPENED";
+        if (orderPaymentStatus === "PAID") {
+          orderStatus = "RECEIVED";
+        }
+        if (orderPaymentStatus === "CANCELED") {
+          orderStatus = "CANCELED";
+        }
 
-        await Order.findByIdAndUpdate(orderId, { status: orderStatus });
+        await Order.findByIdAndUpdate(orderId, {
+          payment: orderPaymentStatus,
+          status: orderStatus,
+        });
       }
 
       res.sendStatus(200);

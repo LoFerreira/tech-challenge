@@ -1,60 +1,123 @@
-
 # Fast-Food tech challenge
 
 Projeto em desenvolvimento conforme progresso da pós-graduação da FIAP - Software Architecture
 
-## Membros: 
-    
+## Membros:
+
 - Leonardo de Almeida Ferreira [rm353533]
 - Robert Alves do Anjos [rm353529]
+  <br /><br />
 
-## Architecture: Hexagonal
+## Endpoints
 
-root-project/
-├── src/
-│   │
-│   ├── adapters/
-│   │   ├── controllers/
-│   │   ├── documentation/
-│   │   └── middleware
-│   │
-│   ├── domain/
-│   │   ├── model/
-│   │   └── middleware   
-│   │
-│   ├── infrastructure/
-│   │   ├── cloud_services/
-│   │   │   └── aws/
-│   │   │
-│   │   ├── database/
-│   │   │   └── MongoDB.ts
-│   │   │
-│   │   └── docker
-│   │
-│   ├── routes/
-│   │   └── index.ts
-│   │
-│   ├── tests/
-│   │
-│   └── server.ts
-│   
-├── node_modules/
-│   └── ...
-│   
-├── deployments/
-│   ├── deployment.yaml
-│   └── service.yaml
-│
-├── uploads/
-│
-├── .env
-├── .gitignore
-├── Dockerfile
-├── package-lock.json
-├── package.json
-├── README.MD
-├── tsconfig.json
-└── tsoa.json
+Postman invite link: https://app.getpostman.com/join-team?invite_code=fbd076935fee97ec62555f1837032175&target_code=ee3d3de9b5097fa6b0cf8d1f6e3a59ca
+
+### Users:
+
+- [POST] _/users_ <br />
+  exemplo: <br />
+  url: http://localhost:3000/users<br />
+
+```
+body: {
+    "name":"Usuário não identificado",
+    "email":"unidentified@gmail.com",
+    "cpf":"12345678909"
+}
+```
+
+- [GET] _/users/{cpf}_ <br />
+  exemplo: http://localhost:3000/users/12345678909
+
+### Products:
+
+- [POST] _/products_ <br />
+  exemplo: <br />
+  url: http://localhost:3000/products<br />
+
+```
+body: {
+    "name":"Dogão",
+    "category":"lanche",
+    "price":"1300",
+    "description": "Super dogão",
+    "image": file input
+}
+```
+
+- [PUT] _/products/{productId}_ <br />
+  exemplo: <br />
+  url: http://localhost:3000/products/66a1758bf5c6fac16f138b77<br />
+
+- [GET] _/products/{productId}_ <br />
+  exemplo: <br />
+  url: http://localhost:3000/products/66a1758bf5c6fac16f138b77<br />
+
+- [GET] _/products/category/{categoryName}_ <br />
+  exemplo: <br />
+  url: http://localhost:3000/products/category/lanche<br />
+
+```
+category = "lanche" | "acompanhamento" | "bebida" | "sobremesa"
+```
+
+- [DELETE] _/products/{productId}_ <br />
+  exemplo: <br />
+  url: http://localhost:3000/products/66a1758bf5c6fac16f138b77<br />
+  <br /><br />
+
+  ### Orders:
+
+- [POST] _/orders_ <br />
+  exemplo: <br />
+  url: http://localhost:3000/orders<br />
+
+```
+body: {
+    "userCpf": 12345678909,
+    "products": [
+        {"product": "66a1758bf5c6fac16f138b77", "quantity": 2},
+        {"product": "66a17627f5c6fac16f138b81", "quantity": 1}
+    ]
+}
+```
+
+- [POST] _/orderPayment_ <br />
+  exemplo: <br />
+  url: http://localhost:3000/orderPayment<br />
+
+```
+body: {
+    "orderId": "66a9716938ac0093ffce3d06"
+}
+```
+
+- [GET] _/orders/status_ <br />
+  exemplo: <br />
+  url: http://localhost:3000/orders/status?status=OPENED<br />
+
+  ```
+  params: {
+   status=OPENED
+  }
+
+  status = "OPENED" | "RECEIVED" | "PREPARING" | "DONE" | "FINISHED" | "CANCELED"
+  ```
+
+- [GET] _/order/payment/status_ <br />
+  exemplo: <br />
+  url: http://localhost:3000/order/payment/status?orderId=66a9716938ac0093ffce3d06<br />
+
+```
+ params: {
+  orderId=66a9716938ac0093ffce3d06
+ }
+```
+
+- [GET] _/orders_ <br />
+  exemplo: <br />
+  url: http://localhost:3000/orders<br />
+  <br />
 
 ## Links
 
@@ -62,7 +125,6 @@ root-project/
 - [NOTION] : https://www.notion.so/FAST-FOOD-SYSTEM-f96fe451104340b29864b4611d3e348c
 - [MIRO] : https://miro.com/welcomeonboard/bmxDZjE3SGdwYXVHTGpRT0MxMVgyU1gwNUZjNUliODluM1BIRnkxUjhKMXp0SzNNY3dhWkI2WnhCWmxoNnBHUnwzNDU4NzY0NTg1NDEwMDQzNjMyfDI=?share_link_id=781584269137
 - [DOCKER IMAGE] : https://hub.docker.com/r/leonardo10sp/tech-challenge
-
 
 ## Kubernetes Deployment
 
@@ -72,8 +134,6 @@ root-project/
 - `kubectl` configurado para se conectar ao seu cluster Kubernetes
 - Docker Desktop (se estiver usando um ambiente local)
 
-
-
 # Configuração do Ambiente de Desenvolvimento com Minikube
 
 Este guia descreve como configurar e rodar o ambiente Kubernetes localmente usando Minikube.
@@ -81,11 +141,10 @@ Este guia descreve como configurar e rodar o ambiente Kubernetes localmente usan
 ## Pré-requisitos
 
 Certifique-se de ter as seguintes ferramentas instaladas:
+
 - Docker
 - Minikube
 - kubectl
-
-
 
 ### Instalação e Configuração do Minikube
 
@@ -95,40 +154,49 @@ Certifique-se de ter as seguintes ferramentas instaladas:
    Execute o comando abaixo em um terminal (cmd ou PowerShell) para instalar o Minikube:
    ```bash
    choco install minikube
+   ```
 
 #### MacOs
 
 1. **Instalar o Minikube usando Homebrew**:
    Execute o comando abaixo em um terminal para instalar o Minikube:
+
    ```bash
    brew install minikube
 
+   ```
 
 2. **Comandos para rodar o minikube**
 
-    **Rodar no terminal fora do projeto**
+   **Rodar no terminal fora do projeto**
 
    - minikube start
    - kubectl config use-context minikube
 
-    **Rodar no terminal do projeto (raiz)**
+     **Rodar no terminal do projeto (raiz)**
+
    - kubectl apply -f deployments/deployment.yaml
    - kubectl apply -f deployments/service.yaml
 
      (opcionais)
+
    - kubectl get pods
    - minikube service tech-challenge-service --url
 
-
 ### Instalação e Configuração do AWS
 
+## Instalando Windows
 
-## Instalando
 - msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2.msi
+
+## Instalando MacOs
+
+- [msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2.msi](https://awscli.amazonaws.com/AWSCLIV2.pkg)
 
 # configurando o aws na sua máquina (terminal da máquina)
 
 - aws configure
+
 #### Você preencherá nessa sequência
 
 SUA_KEY
@@ -141,11 +209,12 @@ Default output format: json
 ### Instalação e Configuração do EKSCTL
 
 ## Instalando eksctl (terminal da máquina)
- - curl -o eksctl.zip https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_Windows_amd64.zip
- - Expand-Archive -Path ~\Downloads\eksctl_Windows_amd64.zip -DestinationPath ~\Downloads\eksctl  
 
- - mkdir "C:\Program Files\eksctl"
- - Move-Item -Path ~\Downloads\eksctl\eksctl.exe -Destination "C:\Program Files\eksctl\eksctl.exe"
+- curl -o eksctl.zip https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_Windows_amd64.zip
+- Expand-Archive -Path ~\Downloads\eksctl_Windows_amd64.zip -DestinationPath ~\Downloads\eksctl
+
+- mkdir "C:\Program Files\eksctl"
+- Move-Item -Path ~\Downloads\eksctl\eksctl.exe -Destination "C:\Program Files\eksctl\eksctl.exe"
 
 ## Configurando variável de ambiente eksctl (terminal da máquina)
 
@@ -153,14 +222,13 @@ Default output format: json
 - eksctl version
 - eksctl help
 
-
 ## Criando clusters
 
 eksctl create cluster --name tech-challenge-cluster --region us-east-1 --nodes 3
 
 ## Atualizando clusters
-aws eks --region us-east-1 update-kubeconfig --name tech-challenge-cluster
 
+aws eks --region us-east-1 update-kubeconfig --name tech-challenge-cluster
 
 ## Por fim, na raiz do projeto
 
@@ -171,4 +239,3 @@ kubectl apply -f deployments/service.yaml
 
 kubectl get nodes
 kubectl get pods
-

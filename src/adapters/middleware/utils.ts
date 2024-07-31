@@ -1,8 +1,12 @@
 import axios from "axios";
 
 export const OrderStatusTranslation: { [value: string]: string } = {
-  PAID: "Pago",
-  PENDING: "Aguardando Pagamento",
+  OPENED: "Aberto",
+  RECEIVED: "Recebido",
+  PREPARING: "Em preparo",
+  DONE: "Pronto para retirar",
+  FINISHED: "Finalizado",
+  Canceled: "Cancelado",
 };
 
 export const fetchPaymentDetails = async (paymentId) => {
@@ -25,9 +29,11 @@ export const fetchPaymentDetails = async (paymentId) => {
 export const mapPaymentStatusToOrderStatus = (paymentStatus) => {
   const statusMap = {
     approved: "PAID",
-    in_process: "PENDING",
+    cancelled: "UNPAID",
+    pending: "PENDING",
+    in_process: "PROCESSING",
     rejected: "REJECTED",
   };
 
-  return statusMap[paymentStatus] || "recebido";
+  return statusMap[paymentStatus] || "PENDING";
 };
