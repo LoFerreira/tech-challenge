@@ -7,7 +7,7 @@ import swaggerSpecs from "./adapters/documentation/swaggerConfig";
 import routes from "./routes/index";
 import PaymentService from "./application/services/PaymentService";
 
-const port = process.env.PORT || 2019;
+const port = process.env.PORT || 3000;
 
 db.on("error", console.log.bind(console, "Database Error"));
 db.once("open", () => console.log("Database is running"));
