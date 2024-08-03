@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { createPixPaymentUseCase } from "../../config/dependencyInjection";
 import { fetchPaymentDetails, mapPaymentStatusToOrderStatus } from "../middleware/utils";
-import { Order } from "../../domain/entities/Order"; // Importando entidade Order
+import { orderService } from "../../config/dependencyInjection";
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ class PaymentController {
         return res.status(400).json({ error: "Pedido inválido" });
       }
 
-      const order = await Order.findById(orderId).populate("user").populate("orderProducts.product");
+      const order = await orderService.findById(orderId).populate("user").populate("orderProducts.product");
 
       if (!order) {
         return res.status(404).json({ error: "Pedido não encontrado" });
@@ -44,7 +44,7 @@ class PaymentController {
         const orderId = paymentDetails.external_reference;
         const orderStatus = mapPaymentStatusToOrderStatus(paymentDetails.status);
 
-        await Order.findByIdAndUpdate(orderId, { status: orderStatus });
+        await orderService.findByIdAndUpdate(orderId, { status: orderStatus });
       }
 
       res.sendStatus(200);
