@@ -35,16 +35,21 @@ export class CreateOrderUseCase {
 
         // Calcular o valor total do pedido
         const totalAmount = orderProducts.reduce((acc, product) => acc + (product.price * product.quantity), 0);
-
+         
+        
         // Criar o pedido
         const order = new Order(
             'generated-id', // Será substituído pelo ID real ao salvar no repositório
             user.id,
+            user.email,
+            user.name,  
             'OPENED',
             orderProducts,
             new Date(),
             'PENDING',
-            totalAmount
+            totalAmount,
+            user 
+
         );
 
         // Salvar o pedido no repositório
