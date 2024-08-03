@@ -1,4 +1,3 @@
-// src/config/dependencyInjection.ts
 
 // Importações para ProductService
 import { CreateProductUseCase } from '../application/use_cases/CreateProductUseCase';
@@ -14,6 +13,7 @@ import { CreateOrderUseCase } from '../application/use_cases/CreateOrderUseCase'
 import { GetOrderPaymentStatusUseCase } from '../application/use_cases/GetOrderPaymentStatusUseCase';
 import { GetOrdersUseCase } from '../application/use_cases/GetOrdersUseCase';
 import { GetOrdersByStatusUseCase } from '../application/use_cases/GetOrdersByStatusUseCase';
+import { UpdateOrderStatusUseCase } from '../application/use_cases/UpdateOrderStatusUseCase'; // Nova importação
 import { MongoOrderRepository } from '../infrastructure/persistence/MongoOrderRepository';
 import OrderService from '../application/services/OrderService';
 
@@ -53,13 +53,15 @@ const createOrderUseCase = new CreateOrderUseCase(orderRepository, userRepositor
 const getOrderPaymentStatusUseCase = new GetOrderPaymentStatusUseCase(orderRepository);
 const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
 const getOrdersByStatusUseCase = new GetOrdersByStatusUseCase(orderRepository);
+const updateOrderStatusUseCase = new UpdateOrderStatusUseCase(orderRepository); // Instanciando o novo caso de uso
 
 // Instanciando o serviço de pedidos com os casos de uso
 const orderService = new OrderService(
     createOrderUseCase,
     getOrderPaymentStatusUseCase,
     getOrdersUseCase,
-    getOrdersByStatusUseCase
+    getOrdersByStatusUseCase,
+    updateOrderStatusUseCase // Passando o caso de uso para o serviço
 );
 
 // Instanciando os casos de uso de usuários
@@ -72,7 +74,6 @@ const userService = new UserService(
     getUserByCpfUseCase
 );
 
-
 // Importações para PaymentService
 import { CreatePixPaymentUseCase } from '../application/use_cases/CreatePixPaymentUseCase';
 import { PaymentService } from '../application/services/PaymentService';
@@ -83,7 +84,5 @@ const paymentService = new PaymentService();
 // Instanciando os casos de uso de pagamentos
 const createPixPaymentUseCase = new CreatePixPaymentUseCase(paymentService);
 
-
-
 // Exportando as instâncias para uso em outras partes da aplicação
-export { productService, orderService, userService, createPixPaymentUseCase  };
+export { productService, orderService, userService, createPixPaymentUseCase };

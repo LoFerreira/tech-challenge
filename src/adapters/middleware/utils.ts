@@ -16,7 +16,7 @@ export const fetchPaymentDetails = async (paymentId) => {
       }
     );
     return response.data;
-  } catch (error) {
+  } catch (error : any) {
     console.error("Error fetching payment details:", error.message);
     throw error;
   }

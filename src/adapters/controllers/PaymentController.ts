@@ -46,7 +46,7 @@ class PaymentController {
         const orderStatus = mapPaymentStatusToOrderStatus(paymentDetails.status);
 
         // Utilize o serviço de pedidos para atualizar o status do pedido
-        await orderService.updateOrderStatus(orderId, orderStatus); // Método deve ser implementado no serviço
+        await orderService.updateOrderStatus(orderId, orderStatus); 
       }
 
       res.sendStatus(200);

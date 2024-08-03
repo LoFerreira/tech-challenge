@@ -1,5 +1,3 @@
-// src/infrastructure/persistence/MongoOrderRepository.ts
-
 import { IOrderRepository } from '../../domain/interfaces/IOrderRepository';
 import { Order } from '../../domain/entities/Order';
 import OrderModel from '../frameworks/mongoose/models/OrderModel';
@@ -86,5 +84,24 @@ export class MongoOrderRepository implements IOrderRepository {
             orderData.payment,
             orderData.totalAmount
         ));
+    }
+
+    async updateById(orderId: string, updateData: Partial<Order>): Promise<Order | null> {
+        const updatedOrderData = await OrderModel.findByIdAndUpdate(orderId, updateData, { new: true }).populate('user').populate('orderProducts.product');
+        if (!updatedOrderData) return null;
+
+        return new Order(
+            updatedOrderData.id,
+            updatedOrderData.user.id,
+            updatedOrderData.status,
+            updatedOrderData.orderProducts.map(p => ({
+                productId: p.product.id,
+                quantity: p.quantity,
+                price: p.price
+            })),
+            updatedOrderData.createdAt,
+            updatedOrderData.payment,
+            updatedOrderData.totalAmount
+        );
     }
 }
