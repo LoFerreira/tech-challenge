@@ -1,7 +1,8 @@
+// PaymentController.ts
+
 import express, { Request, Response } from "express";
-import { createPixPaymentUseCase } from "../../config/dependencyInjection";
+import { createPixPaymentUseCase, orderService } from "../../config/dependencyInjection";
 import { fetchPaymentDetails, mapPaymentStatusToOrderStatus } from "../middleware/utils";
-import { orderService } from "../../config/dependencyInjection";
 
 const router = express.Router();
 
@@ -15,8 +16,8 @@ class PaymentController {
         return res.status(400).json({ error: "Pedido inválido" });
       }
 
-      const order = await orderService.findById(orderId).populate("user").populate("orderProducts.product");
-
+      // Utilize o serviço de pedidos para buscar a ordem pelo ID
+      const order = await orderService.getOrderById(orderId);
       if (!order) {
         return res.status(404).json({ error: "Pedido não encontrado" });
       }
@@ -30,7 +31,7 @@ class PaymentController {
     }
   };
 
-  /*[WEBHOOK DE ATUALIZAÇAO DO STATUS DE PAGAMENTO]*/
+  /*[WEBHOOK DE ATUALIZAÇÃO DO STATUS DE PAGAMENTO]*/
   static webhook = async (req: Request, res: Response) => {
     try {
       const notification = req.body;
@@ -44,7 +45,8 @@ class PaymentController {
         const orderId = paymentDetails.external_reference;
         const orderStatus = mapPaymentStatusToOrderStatus(paymentDetails.status);
 
-        await orderService.findByIdAndUpdate(orderId, { status: orderStatus });
+        // Utilize o serviço de pedidos para atualizar o status do pedido
+        await orderService.updateOrderStatus(orderId, orderStatus); // Método deve ser implementado no serviço
       }
 
       res.sendStatus(200);

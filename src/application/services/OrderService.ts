@@ -11,6 +11,10 @@ export class OrderService {
     private getOrdersByStatusUseCase: GetOrdersByStatusUseCase
   ) {}
 
+  async getOrderById(orderId: string) {
+    return await this.getOrdersUseCase.getOrderById(orderId); 
+  }
+
   createOrder(userCpf: string, products: { productId: string, quantity: number }[]) {
     return this.createOrderUseCase.execute(userCpf, products);
   }
