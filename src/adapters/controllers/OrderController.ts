@@ -1,5 +1,3 @@
-// src/interfaces/controllers/OrderController.ts
-
 import express, { Request, Response } from "express";
 import { orderService } from "../../config/dependencyInjection"; // Importando a instância do serviço
 
@@ -22,6 +20,8 @@ class OrderController {
       res.status(500).send({ message: error.message });
     }
   };
+
+
   /*[CONSULTAR STATUS DO PAGAMENTO DO PEDIDO]*/
   static getOrderPaymentStatus = async (req: Request, res: Response) => {
     const { orderId } = req.query;
@@ -34,6 +34,7 @@ class OrderController {
       res.status(500).send({ message: err.message });
     }
   };
+
 
   /*[LISTAR ORDERS]*/
   static getOrders = async (req: Request, res: Response) => {

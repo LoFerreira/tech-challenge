@@ -1,5 +1,4 @@
 import { IOrderRepository } from '../../domain/interfaces/IOrderRepository';
-import { Order } from '../../domain/entities/Order';
 
 export class GetOrderPaymentStatusUseCase {
     constructor(private orderRepository: IOrderRepository) { }

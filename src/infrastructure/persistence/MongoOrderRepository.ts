@@ -14,8 +14,6 @@ export class MongoOrderRepository implements IOrderRepository {
         return new Order(
             (orderData._id as unknown as string).toString(), 
             (orderData.user as unknown as string).toString(),
-            "", // Coloque o campo correto se disponível (ex: orderData.user.email)
-            "", // Coloque o campo correto se disponível (ex: orderData.user.name)
             orderData.status,
             orderData.orderProducts.map(p => ({
                 productId: (p.product as unknown as string).toString(),
@@ -47,8 +45,6 @@ export class MongoOrderRepository implements IOrderRepository {
         return new Order(
             (savedOrder._id as unknown as string).toString(),
             (savedOrder.user as unknown as string).toString(),
-            "", // Coloque o campo correto se disponível
-            "", // Coloque o campo correto se disponível
             savedOrder.status,
             savedOrder.orderProducts.map(p => ({
                 productId: (p.product as unknown as string).toString(),
@@ -67,8 +63,6 @@ export class MongoOrderRepository implements IOrderRepository {
         return ordersData.map(orderData => new Order(
             (orderData._id as unknown as string).toString(),
             (orderData.user as unknown as string).toString(),
-            "", // Coloque o campo correto se disponível
-            "", // Coloque o campo correto se disponível
             orderData.status,
             orderData.orderProducts.map(p => ({
                 productId: (p.product as unknown as string).toString(),
@@ -87,8 +81,6 @@ export class MongoOrderRepository implements IOrderRepository {
         return ordersData.map(orderData => new Order(
             (orderData._id as unknown as string).toString(),
             (orderData.user as unknown as string).toString(),
-            "", // Coloque o campo correto se disponível
-            "", // Coloque o campo correto se disponível
             orderData.status,
             orderData.orderProducts.map(p => ({
                 productId: (p.product as unknown as string).toString(),
@@ -109,8 +101,6 @@ export class MongoOrderRepository implements IOrderRepository {
         return new Order(
             (updatedOrderData._id as unknown as string).toString(),
             (updatedOrderData.user as unknown as string).toString(),
-            "", // Coloque o campo correto se disponível
-            "", // Coloque o campo correto se disponível
             updatedOrderData.status,
             updatedOrderData.orderProducts.map(p => ({
                 productId: (p.product as unknown as string).toString(),

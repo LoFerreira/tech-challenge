@@ -3,9 +3,7 @@ import { User } from "./User";
 export class Order {
     constructor(
         public id: string,
-        public userId: string,
-        public userEmail: string,  
-        public userName: string,   
+        public userId: string,  
         public status: string,
         public orderProducts: Array<{ productId: string, quantity: number, price: number }>,
         public createdAt: Date,
