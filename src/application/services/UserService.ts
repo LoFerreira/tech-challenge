@@ -15,7 +15,7 @@ class UserService {
    * @param userData Dados do usuário.
    * @returns Instância do usuário criado.
    */
-  async createUser(userData: { name: string; cpf: string; email: string; password: string }) {
+  async createUser(userData: { name: string; cpf: string; email: string; }) {
     try {
       return await this.createUserUseCase.execute(userData);
     } catch (err: any) {

@@ -15,8 +15,7 @@ export class MongoUserRepository implements IUserRepository {
         const userModel = new UserModel({
             name: user.name,
             cpf: user.cpf,
-            email: user.email,
-            password: user.password,
+            email: user.email
         });
 
         const savedUser = await userModel.save();
@@ -24,8 +23,7 @@ export class MongoUserRepository implements IUserRepository {
             savedUser.id.toString(),
             savedUser.name,
             savedUser.cpf,
-            savedUser.email,
-            savedUser.password
+            savedUser.email
         );
     }
 
@@ -42,8 +40,7 @@ export class MongoUserRepository implements IUserRepository {
             userData.id.toString(),
             userData.name,
             userData.cpf,
-            userData.email,
-            userData.password
+            userData.email
         );
     }
 }

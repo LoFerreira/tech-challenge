@@ -23,7 +23,7 @@ export class MongoOrderRepository implements IOrderRepository {
             orderData.createdAt,
             orderData.payment,
             orderData.totalAmount,
-            new User((orderData.user as unknown as string).toString(), "", "", "", "") // Ajuste com os campos corretos
+            new User((orderData.user as unknown as string).toString(), "", "", "") // Ajuste com os campos corretos
         );
     }
 
@@ -54,7 +54,7 @@ export class MongoOrderRepository implements IOrderRepository {
             savedOrder.createdAt,
             savedOrder.payment,
             savedOrder.totalAmount,
-            new User((savedOrder.user as unknown as string).toString(), "", "", "", "") // Ajuste com os campos corretos
+            new User((savedOrder.user as unknown as string).toString(), "", "", "") // Ajuste com os campos corretos
         );
     }
 
@@ -72,7 +72,7 @@ export class MongoOrderRepository implements IOrderRepository {
             orderData.createdAt,
             orderData.payment,
             orderData.totalAmount,
-            new User((orderData.user as unknown as string).toString(), "", "", "", "") // Ajuste com os campos corretos
+            new User((orderData.user as unknown as string).toString(), "", "", "") // Ajuste com os campos corretos
         ));
     }
 
@@ -90,7 +90,7 @@ export class MongoOrderRepository implements IOrderRepository {
             orderData.createdAt,
             orderData.payment,
             orderData.totalAmount,
-            new User((orderData.user as unknown as string).toString(), "", "", "", "") // Ajuste com os campos corretos
+            new User((orderData.user as unknown as string).toString(), "", "", "") // Ajuste com os campos corretos
         ));
     }
 
@@ -110,7 +110,7 @@ export class MongoOrderRepository implements IOrderRepository {
             updatedOrderData.createdAt,
             updatedOrderData.payment,
             updatedOrderData.totalAmount,
-            new User((updatedOrderData.user as unknown as string).toString(), "", "", "", "") // Ajuste com os campos corretos
+            new User((updatedOrderData.user as unknown as string).toString(), "", "", "") // Ajuste com os campos corretos
         );
     }
 }

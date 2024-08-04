@@ -7,7 +7,6 @@ interface IUser extends Document {
     name: string;
     cpf: string;
     email: string;
-    password: string;
 }
 
 /**
@@ -16,8 +15,7 @@ interface IUser extends Document {
 const UserSchema: Schema<IUser> = new Schema({
     name: { type: String, required: true },
     cpf: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
+    email: { type: String, required: false, unique: true },
 });
 
 /**

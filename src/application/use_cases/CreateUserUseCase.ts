@@ -8,7 +8,6 @@ interface CreateUserRequest {
     name: string;
     cpf: string;
     email: string;
-    password: string;
 }
 
 /**
@@ -23,10 +22,10 @@ export class CreateUserUseCase {
      * @returns Instância do usuário criado.
      */
     async execute(request: CreateUserRequest): Promise<User> {
-        const { name, cpf, email, password } = request;
+        const { name, cpf, email } = request;
 
         // Criar uma nova instância do usuário
-        const user = new User('generated-id', name, cpf, email, password);
+        const user = new User('generated-id', name, cpf, email);
 
         // Salvar o usuário no repositório
         return await this.userRepository.create(user);
