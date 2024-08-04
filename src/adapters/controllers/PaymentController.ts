@@ -43,10 +43,21 @@ class PaymentController {
         const paymentDetails = await fetchPaymentDetails(paymentId);
 
         const orderId = paymentDetails.external_reference;
-        const orderStatus = mapPaymentStatusToOrderStatus(paymentDetails.status);
+        const orderPaymentStatus = mapPaymentStatusToOrderStatus(paymentDetails.status);
+        
+        // Novo código para determinar o status da ordem
+        let orderStatus = "OPENED";
+        if (orderPaymentStatus === "PAID") {
+          orderStatus = "RECEIVED";
+        } else if (orderPaymentStatus === "CANCELED") {
+          orderStatus = "CANCELED";
+        }
 
         // Utilize o serviço de pedidos para atualizar o status do pedido
-        await orderService.updateOrderStatus(orderId, orderStatus); 
+        await orderService.updateOrderStatus(orderId, {
+          payment: orderPaymentStatus,
+          status: orderStatus,
+        });
       }
 
       res.sendStatus(200);
