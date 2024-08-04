@@ -53,7 +53,7 @@ const createOrderUseCase = new CreateOrderUseCase(orderRepository, userRepositor
 const getOrderPaymentStatusUseCase = new GetOrderPaymentStatusUseCase(orderRepository);
 const getOrdersUseCase = new GetOrdersUseCase(orderRepository);
 const getOrdersByStatusUseCase = new GetOrdersByStatusUseCase(orderRepository);
-const updateOrderStatusUseCase = new UpdateOrderStatusUseCase(orderRepository); // Instanciando o novo caso de uso
+const updateOrderStatusUseCase = new UpdateOrderStatusUseCase(orderRepository);
 
 // Instanciando o serviço de pedidos com os casos de uso
 const orderService = new OrderService(
@@ -61,7 +61,7 @@ const orderService = new OrderService(
     getOrderPaymentStatusUseCase,
     getOrdersUseCase,
     getOrdersByStatusUseCase,
-    updateOrderStatusUseCase // Passando o caso de uso para o serviço
+    updateOrderStatusUseCase 
 );
 
 // Instanciando os casos de uso de usuários

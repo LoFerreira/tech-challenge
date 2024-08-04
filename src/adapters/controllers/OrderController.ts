@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { orderService } from "../../config/dependencyInjection"; // Importando a instância do serviço
+import { orderService } from "../../config/dependencyInjection";
 
 const router = express.Router();
 
@@ -71,20 +71,25 @@ class OrderController {
     }
   };
 
-  static async updateOrderStatus(req, res) {
-    const orderId = req.params.id;
-    const { status } = req.body;
 
-    try {
-      const order = await OrderService.updateOrderStatus({ orderId, status });
-      return res
-        .status(200)
-        .json({ message: "Order status updated successfully", order });
-    } catch (error: any) {
-      console.error("Error updating order status:", error);
-      return res.status(500).json({ error: error.message });
+/*[ATUALIZAR ORDER]*/
+static updateOrderStatus = async (req: Request, res: Response) => {
+  const orderId = req.params.id;
+  const { payment, status } = req.body;
+
+  try {
+    const updatedOrder = await orderService.updateOrderStatus(orderId, { payment, status });
+    if (!updatedOrder) {
+      return res.status(404).json({ message: "Order not found" });
     }
+    return res.status(200).json({ message: "Order status updated successfully", order: updatedOrder });
+  } catch (error: any) {
+    console.error("Error updating order status:", error);
+    return res.status(500).json({ error: error.message });
   }
+};
+
+  
 }
 
 // Definindo as rotas para os endpoints de pedidos
