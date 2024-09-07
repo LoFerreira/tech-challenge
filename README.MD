@@ -254,3 +254,76 @@ kubectl apply -f deployments/service.yaml
 
 kubectl get nodes
 kubectl get pods
+
+
+
+
+src/
+├── api/                               # Camada de Interface Externa (API)
+│   ├── controllers/                   # Controladores da API
+│   │   ├── OrderController.ts
+│   │   ├── ProductController.ts
+│   │   └── UserController.ts
+│   └── routes/                        # Definição de Rotas HTTP
+│       ├── OrderRoute.ts
+│       ├── ProductRoute.ts
+│       └── UserRoute.ts
+│
+├── application/                       # Camada de Aplicação
+│   ├── services/                      # Serviços da aplicação
+│   │   ├── OrderService.ts
+│   │   ├── ProductService.ts
+│   │   └── UserService.ts
+│   └── use_cases/                     # Casos de uso
+│       ├── orders/
+│       │   ├── CreateOrderUseCase.ts
+│       │   ├── GetOrderPaymentStatusUseCase.ts
+│       │   ├── GetOrdersUseCase.ts
+│       │   └── UpdateOrderStatusUseCase.ts
+│       ├── products/
+│       │   ├── CreateProductUseCase.ts
+│       │   ├── UpdateProductUseCase.ts
+│       │   └── DeleteProductUseCase.ts
+│       └── users/
+│           ├── CreateUserUseCase.ts
+│           └── GetUserByCpfUseCase.ts
+│
+├── domain/                            # Camada de Domínio
+│   ├── entities/                      # Entidades do domínio
+│   │   ├── Order.ts
+│   │   ├── Product.ts
+│   │   └── User.ts
+│   ├── value_objects/                 # Objetos de valor
+│   │   ├── OrderStatus.ts
+│   │   └── PaymentStatus.ts
+│   └── interfaces/                    # Interfaces (Portas) para repositórios e gateways
+│       ├── IOrderRepository.ts
+│       ├── IProductRepository.ts
+│       ├── IUserRepository.ts
+│       └── IPaymentGateway.ts         # Interface para o sistema de pagamento
+│
+├── infrastructure/                    # Camada de Infraestrutura
+│   ├── frameworks/                    # Frameworks e drivers
+│   │   ├── http/                      # Framework web (Express, Fastify, etc.)
+│   │   └── mongoose/                  # Integração com o Mongoose (MongoDB)
+│   │       ├── models/                # Modelos Mongoose
+│   │       │   ├── OrderModel.ts
+│   │       │   ├── ProductModel.ts
+│   │       │   └── UserModel.ts
+│   │       └── repositories/          # Implementações de repositórios usando Mongoose
+│   │           ├── MongoOrderRepository.ts
+│   │           ├── MongoProductRepository.ts
+│   │           └── MongoUserRepository.ts
+│   └── adapters/                      # Adaptadores para sistemas externos
+│       ├── payment/                   # Adaptadores para gateways de pagamento
+│       │   └── MercadoPagoGateway.ts  # Implementação do gateway MercadoPago
+│       └── persistence/               # Implementações de persistência específicas
+│           └── repositories/          # Adaptadores de persistência (como MongoDB)
+│               ├── MongoOrderRepository.ts
+│               ├── MongoProductRepository.ts
+│               └── MongoUserRepository.ts
+│   └── config/                        # Configurações gerais da infraestrutura
+│       ├── DependencyInjection.ts     # Configuração de injeção de dependências
+│       └── DatabaseConfig.ts          # Configuração do banco de dados
+│
+└── main.ts                            # Ponto de entrada da aplicação

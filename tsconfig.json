@@ -10,7 +10,14 @@
     "strict": true,
     "noImplicitAny": false,
     "skipLibCheck": true,
-    "lib": ["es6"]
+    "lib": ["es6"],
+    "baseUrl": "./src",  // Define a pasta base para os caminhos relativos
+    "paths": {
+      "@models/*": ["infrastructure/persistence/models/*"],
+      "@repositories/*": ["infrastructure/frameworks/mongoose/repositories/*"],
+      "@interfaces/*": ["domain/interfaces/*"],
+      "@entities/*": ["domain/entities/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.json"]
 }

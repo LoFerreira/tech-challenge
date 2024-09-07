@@ -2,33 +2,52 @@ import "dotenv/config";
 import express from "express";
 import ngrok from "ngrok";
 import swaggerUi from "swagger-ui-express";
-import db from "../src/infrastructure/database/MongoDB";
-import swaggerSpecs from "./adapters/documentation/swaggerConfig";
-import routes from "./routes/index";
-import PaymentService from "./application/services/PaymentService";
+import { createConnection } from "./External/Infra/Database"; // Ajuste a importação para o banco de dados correto
+import swaggerSpecs from "./Adapters/Documentation/swaggerConfig";
+import routes from "./Adapters/Routes";
+import PaymentService from "./Application/Services/PaymentService";
+import cors from "cors"; // Se necessário, ative o CORS
 
 const port = process.env.PORT || 3000;
 
-db.on("error", console.log.bind(console, "Database Error"));
-db.once("open", () => console.log("Database is running"));
+async function startServer() {
+  // Estabelece conexão com o banco de dados
+  try {
+    await createConnection();
+    console.log("Database connection established");
+  } catch (error) {
+    console.error("Database connection error", error);
+    process.exit(1); // Encerra o processo em caso de erro na conexão com o banco de dados
+  }
 
-const app = express();
-app.use(express.json());
+  // Inicializa o aplicativo Express
+  const app = express();
 
-app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+  // Configura middlewares globais
+  app.use(express.json());
+  app.use(cors()); // Ativa CORS se necessário
 
-// app.use(cors());
-app.get("/", (req, res) => res.send("Server is running!"));
-app.use(express.json());
+  // Configura Swagger para documentação da API
+  app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
-app.listen(port, async () => {
-  const ngrokUrl = await ngrok.connect(Number(port));
-  PaymentService.setWebhookUrl(`${ngrokUrl}/webhook`);
+  // Rota de verificação do servidor
+  app.get("/", (req, res) => res.send("Server is running!"));
 
-  console.log(`ngrok URL: ${ngrokUrl}`);
-  console.log(`Server Running at http://localhost:${port}`);
-});
+  // Registra rotas da aplicação
+  routes(app);
 
-routes(app);
+  // Inicia o servidor
+  app.listen(port, async () => {
+    // Configura ngrok para expor localmente a aplicação
+    const ngrokUrl = await ngrok.connect(Number(port));
+    PaymentService.setWebhookUrl(`${ngrokUrl}/webhook`);
 
-export default app;
+    console.log(`ngrok URL: ${ngrokUrl}`);
+    console.log(`Server running at http://localhost:${port}`);
+  });
+}
+
+// Inicia o servidor
+startServer();
+
+export default startServer;
