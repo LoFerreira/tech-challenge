@@ -1,4 +1,4 @@
-import { PaymentService } from '../../application/services/PaymentService';
+import { PaymentService } from '../../adapters/gateway/MercadoPagoGateway';
 import { Order } from '../entities/Order';
 import { PaymentCreateResponse } from '../entities/Payment'; // Tipagem da resposta
 

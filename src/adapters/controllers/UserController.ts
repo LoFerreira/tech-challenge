@@ -1,32 +1,34 @@
 import express, { Request, Response } from "express";
-import { userService } from "../../config/dependencyInjection"; // Importando a instância do serviço
+import { createUserUseCase, getUserByCpfUseCase } from "../../config/dependencyInjection"; // Importando os use cases diretamente
 
 const router = express.Router();
 
 /*[APIS USUÁRIOS] */
 class UserController {
-  /*[CRIAR USUÁRIO : FROM BODY] */
+  /*[CRIAR USUÁRIO : FROM BODY]
+    Cria um novo usuário com base nos dados enviados no corpo da requisição.
+  */
   static createUser = async (req: Request, res: Response) => {
     try {
-      // Chamando o método do serviço para criar um usuário
-      const savedUser = await userService.createUser(req.body);
+      // Chamando diretamente o use case para criar o usuário
+      const savedUser = await createUserUseCase.execute(req.body);
       res.status(201).send(savedUser);
     } catch (err: any) {
-      res
-        .status(500)
-        .send({ message: `${err.message} - Failure to register user.` });
+      res.status(500).send({ message: `${err.message} - Failure to register user.` });
     }
   };
 
-  /*[BUSCA USUÁRIO PELO CPF : FROM PARAMS] */
+  /*[BUSCA USUÁRIO PELO CPF : FROM PARAMS]
+    Busca um usuário pelo CPF fornecido nos parâmetros da requisição.
+  */
   static getUserByCPF = async (req: Request, res: Response) => {
     const { cpf } = req.params;
     try {
       if (typeof cpf !== "string") {
         throw new Error("CPF must be a string");
       }
-      // Chamando o método do serviço para encontrar usuários por CPF
-      const usersByCPF = await userService.getUserByCPF(cpf);
+      // Chamando diretamente o use case para buscar o usuário pelo CPF
+      const usersByCPF = await getUserByCpfUseCase.execute(cpf);
       res.status(200).send(usersByCPF);
     } catch (err: any) {
       res.status(500).send({ message: err.message });
@@ -35,7 +37,6 @@ class UserController {
 }
 
 /*DEFININDO OS ENDPOINTS*/
-
 router.get("/users/:cpf", UserController.getUserByCPF);
 router.post("/users", UserController.createUser);
 

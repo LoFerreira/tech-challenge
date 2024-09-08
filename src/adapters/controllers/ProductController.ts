@@ -1,6 +1,12 @@
 import express, { Request, Response } from "express";
 import multer from "multer";
-import { productService } from "../../config/dependencyInjection"; // Importando a instância do serviço
+import {
+  createProductUseCase,
+  updateProductUseCase,
+  deleteProductUseCase,
+  getProductByIdUseCase,
+  listProductsByCategoryUseCase,
+} from "../../config/dependencyInjection"; // Importando os use cases diretamente
 
 const router = express.Router();
 
@@ -9,15 +15,17 @@ const upload = multer({ dest: "uploads/" });
 
 /*[APIS PRODUTO]*/
 class ProductController {
-  /*[CRIAR PRODUTO]*/
+  /*[CRIAR PRODUTO]
+    Cria um novo produto a partir dos dados enviados na requisição.
+    O caminho da imagem do produto é salvo através do multer.
+  */
   static createProduct = async (req: Request, res: Response) => {
-    // Extraindo dados do corpo da requisição e do arquivo de imagem
     const { name, category, price, description } = req.body;
     const imagePath = req.file?.path || "";
 
     try {
-      // Chamando o serviço para criar um novo produto
-      const newProduct = await productService.createProduct({
+      // Chamando diretamente o use case para criar o produto
+      const newProduct = await createProductUseCase.execute({
         name,
         category,
         price,
@@ -26,22 +34,23 @@ class ProductController {
         mimetype: req.file?.mimetype || "",
       });
 
-      res.status(201).send(newProduct); // Retornando o novo produto
+      res.status(201).send(newProduct);
     } catch (error: any) {
       res.status(500).send({ message: error.message });
     }
   };
 
-  /*[ATUALIZAR PRODUTO]*/
+  /*[ATUALIZAR PRODUTO]
+    Atualiza as informações de um produto existente com base no ID fornecido.
+  */
   static updateProduct = async (req: Request, res: Response) => {
-    // Extraindo o ID do produto e os dados de atualização
     const { id } = req.params;
     const { name, category, price, description } = req.body;
     const imagePath = req.file?.path || "";
 
     try {
-      // Chamando o serviço para atualizar o produto
-      const response = await productService.updateProduct({
+      // Chamando diretamente o use case para atualizar o produto
+      const response = await updateProductUseCase.execute({
         id,
         name,
         category,
@@ -51,46 +60,49 @@ class ProductController {
         mimetype: req.file?.mimetype || "",
       });
 
-      res.status(200).send(response); // Retornando a resposta de sucesso
+      res.status(200).send(response);
     } catch (error: any) {
       res.status(500).send({ message: error.message });
     }
   };
 
-  /*[DELETAR PRODUTO]*/
+  /*[DELETAR PRODUTO]
+    Deleta um produto existente com base no ID fornecido.
+  */
   static deleteProduct = async (req: Request, res: Response) => {
-    // Extraindo o ID do produto dos parâmetros da requisição
     const { id } = req.params;
     try {
-      // Chamando o serviço para deletar o produto
-      const message = await productService.deleteProduct(id);
-      res.status(200).send(message); // Retornando a mensagem de sucesso
+      // Chamando diretamente o use case para deletar o produto
+      const message = await deleteProductUseCase.execute(id);
+      res.status(200).send(message);
     } catch (err: any) {
       res.status(500).send({ message: err.message });
     }
   };
 
-  /*[BUSCA PRODUTO PELO ID]*/
+  /*[BUSCA PRODUTO PELO ID]
+    Busca um produto existente com base no ID fornecido.
+  */
   static getProductById = async (req: Request, res: Response) => {
-    // Extraindo o ID do produto dos parâmetros da requisição
     const { productId } = req.params;
     try {
-      // Chamando o serviço para obter o produto pelo ID
-      const product = await productService.getProductByID(String(productId));
-      res.status(200).send(product); // Retornando o produto encontrado
+      // Chamando diretamente o use case para obter o produto pelo ID
+      const product = await getProductByIdUseCase.execute(String(productId));
+      res.status(200).send(product);
     } catch (err: any) {
       res.status(500).send({ message: err.message });
     }
   };
 
-  /*[LISTAR PRODUTOS POR CATEGORIA]*/
+  /*[LISTAR PRODUTOS POR CATEGORIA]
+    Lista todos os produtos de uma categoria específica.
+  */
   static listProductByCategory = async (req: Request, res: Response) => {
-    // Extraindo a categoria dos parâmetros da requisição
     const { category } = req.params;
     try {
-      // Chamando o serviço para listar produtos por categoria
-      const productsByCategory = await productService.listProductsByCategory(category);
-      res.status(200).send(productsByCategory); // Retornando os produtos encontrados
+      // Chamando diretamente o use case para listar produtos por categoria
+      const productsByCategory = await listProductsByCategoryUseCase.execute(category);
+      res.status(200).send(productsByCategory);
     } catch (err: any) {
       res.status(500).send({ message: err.message });
     }

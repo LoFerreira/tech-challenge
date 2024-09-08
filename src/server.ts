@@ -5,7 +5,7 @@ import swaggerUi from "swagger-ui-express";
 import db from "./external/database/mongoDB/MongoDB";
 import swaggerSpecs from "./pkg/documentation/swaggerConfig";
 import routes from "./routes/index";
-import PaymentService from "./application/services/PaymentService";
+import PaymentService from "./adapters/gateway/MercadoPagoGateway";
 
 const port = process.env.PORT || 3000;
 
