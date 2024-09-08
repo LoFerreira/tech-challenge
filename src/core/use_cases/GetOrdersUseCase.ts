@@ -1,5 +1,5 @@
-import { IOrderRepository } from '../../domain/interfaces/IOrderRepository';
-import { Order } from '../../domain/entities/Order';
+import { IOrderRepository } from '../../adapters/repositories/IOrderRepository';
+import { Order } from '../entities/Order';
 
 export class GetOrdersUseCase {
     constructor(private orderRepository: IOrderRepository) { }

@@ -1,4 +1,4 @@
-import { IOrderRepository } from '../../domain/interfaces/IOrderRepository';
+import { IOrderRepository } from '../../adapters/repositories/IOrderRepository';
 
 export class GetOrderPaymentStatusUseCase {
     constructor(private orderRepository: IOrderRepository) { }

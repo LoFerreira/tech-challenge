@@ -1,6 +1,6 @@
-import { IProductRepository } from '../../domain/interfaces/IProductRepository';
-import { Product } from '../../domain/entities/Product';
-import ProductModel from '../../infrastructure/frameworks/mongoose/models/ProductModel';
+import { IProductRepository } from '../../../../adapters/repositories/IProductRepository';
+import { Product } from '../../../../core/entities/Product';
+import ProductModel from '../frameworks/mongoose/models/ProductModel';
 
 export class MongoProductRepository implements IProductRepository {
     async create(product: Product): Promise<Product> {

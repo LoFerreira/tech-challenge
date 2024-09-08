@@ -1,4 +1,4 @@
-import { Order } from '../entities/Order';
+import { Order } from '../../core/entities/Order';
 
 export interface IOrderRepository {
     

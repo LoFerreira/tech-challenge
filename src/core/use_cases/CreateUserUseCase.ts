@@ -1,5 +1,5 @@
-import { IUserRepository } from '../../domain/interfaces/IUserRepository';
-import { User } from '../../domain/entities/User';
+import { IUserRepository } from '../../adapters/repositories/IUserRepository';
+import { User } from '../entities/User';
 
 /**
  * Dados de entrada para criar um novo usuário.

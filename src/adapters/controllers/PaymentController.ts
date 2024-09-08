@@ -2,7 +2,7 @@
 
 import express, { Request, Response } from "express";
 import { createPixPaymentUseCase, orderService } from "../../config/dependencyInjection";
-import { fetchPaymentDetails, mapPaymentStatusToOrderStatus } from "../middleware/utils";
+import { fetchPaymentDetails, mapPaymentStatusToOrderStatus } from "../../pkg/middleware/utils";
 
 const router = express.Router();
 

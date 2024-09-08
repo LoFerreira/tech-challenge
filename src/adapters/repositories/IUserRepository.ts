@@ -1,4 +1,4 @@
-import { User } from '../entities/User';
+import { User } from '../../core/entities/User';
 
 /**
  * Interface para o repositório de usuários.

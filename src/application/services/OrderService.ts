@@ -1,8 +1,8 @@
-import { CreateOrderUseCase } from '../use_cases/CreateOrderUseCase';
-import { GetOrderPaymentStatusUseCase } from '../use_cases/GetOrderPaymentStatusUseCase';
-import { GetOrdersUseCase } from '../use_cases/GetOrdersUseCase';
-import { GetOrdersByStatusUseCase } from '../use_cases/GetOrdersByStatusUseCase';
-import { UpdateOrderStatusUseCase } from '../use_cases/UpdateOrderStatusUseCase';
+import { CreateOrderUseCase } from '../../core/use_cases/CreateOrderUseCase';
+import { GetOrderPaymentStatusUseCase } from '../../core/use_cases/GetOrderPaymentStatusUseCase';
+import { GetOrdersUseCase } from '../../core/use_cases/GetOrdersUseCase';
+import { GetOrdersByStatusUseCase } from '../../core/use_cases/GetOrdersByStatusUseCase';
+import { UpdateOrderStatusUseCase } from '../../core/use_cases/UpdateOrderStatusUseCase';
 
 export class OrderService {
   constructor(

@@ -1,5 +1,5 @@
-import { CreateUserUseCase } from '../use_cases/CreateUserUseCase';
-import { GetUserByCpfUseCase } from '../use_cases/GetUserByCpfUseCase';
+import { CreateUserUseCase } from '../../core/use_cases/CreateUserUseCase';
+import { GetUserByCpfUseCase } from '../../core/use_cases/GetUserByCpfUseCase';
 
 /**
  * Serviço para manipulação de usuários.

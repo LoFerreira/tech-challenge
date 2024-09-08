@@ -1,7 +1,7 @@
-import { IOrderRepository } from '../../domain/interfaces/IOrderRepository';
-import { IUserRepository } from '../../domain/interfaces/IUserRepository';
-import { IProductRepository } from '../../domain/interfaces/IProductRepository';
-import { Order } from '../../domain/entities/Order';
+import { IOrderRepository } from '../../adapters/repositories/IOrderRepository';
+import { IUserRepository } from '../../adapters/repositories/IUserRepository';
+import { IProductRepository } from '../../adapters/repositories/IProductRepository';
+import { Order } from '../entities/Order';
 
 interface ProductOrder {
     productId: string;

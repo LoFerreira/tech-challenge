@@ -1,9 +1,9 @@
 // src/infrastructure/persistence/MongoOrderRepository.ts
 
-import { IOrderRepository } from '../../domain/interfaces/IOrderRepository';
-import { Order } from '../../domain/entities/Order';
+import { IOrderRepository } from '../../../../adapters/repositories/IOrderRepository';
+import { Order } from '../../../../core/entities/Order';
 import OrderModel from '../frameworks/mongoose/models/OrderModel';
-import { User } from '../../domain/entities/User';
+import { User } from '../../../../core/entities/User';
 
 
 export class MongoOrderRepository implements IOrderRepository {

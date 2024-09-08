@@ -1,5 +1,5 @@
-import { IProductRepository } from '../../domain/interfaces/IProductRepository';
-import { Product } from '../../domain/entities/Product'; // Certifique-se de importar Product
+import { IProductRepository } from '../../adapters/repositories/IProductRepository';
+import { Product } from '../entities/Product'; // Certifique-se de importar Product
 import fs from 'fs';
 
 interface UpdateProductRequest {

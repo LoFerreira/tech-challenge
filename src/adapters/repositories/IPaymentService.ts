@@ -1,5 +1,5 @@
-import { Order } from "../entities/Order";
-import { PaymentCreateResponse } from "../entities/Payment";
+import { Order } from "../../core/entities/Order";
+import { PaymentCreateResponse } from "../../core/entities/Payment";
 
 export interface IPaymentService {
     createPixPayment(order: Order): Promise<PaymentCreateResponse>;

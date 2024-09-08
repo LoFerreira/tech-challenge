@@ -1,8 +1,8 @@
-import { CreateProductUseCase } from '../use_cases/CreateProductUseCase';
-import { UpdateProductUseCase } from '../use_cases/UpdateProductUseCase';
-import { DeleteProductUseCase } from '../use_cases/DeleteProductUseCase';
-import { GetProductByIdUseCase } from '../use_cases/GetProductByIdUseCase';
-import { ListProductsByCategoryUseCase } from '../use_cases/ListProductsByCategoryUseCase';
+import { CreateProductUseCase } from '../../core/use_cases/CreateProductUseCase';
+import { UpdateProductUseCase } from '../../core/use_cases/UpdateProductUseCase';
+import { DeleteProductUseCase } from '../../core/use_cases/DeleteProductUseCase';
+import { GetProductByIdUseCase } from '../../core/use_cases/GetProductByIdUseCase';
+import { ListProductsByCategoryUseCase } from '../../core/use_cases/ListProductsByCategoryUseCase';
 
 class ProductService {
   constructor(

@@ -1,26 +1,26 @@
 
 // Importações para ProductService
-import { CreateProductUseCase } from '../application/use_cases/CreateProductUseCase';
-import { UpdateProductUseCase } from '../application/use_cases/UpdateProductUseCase';
-import { DeleteProductUseCase } from '../application/use_cases/DeleteProductUseCase';
-import { GetProductByIdUseCase } from '../application/use_cases/GetProductByIdUseCase';
-import { ListProductsByCategoryUseCase } from '../application/use_cases/ListProductsByCategoryUseCase';
-import { MongoProductRepository } from '../infrastructure/persistence/MongoProductRepository';
+import { CreateProductUseCase } from '../core/use_cases/CreateProductUseCase';
+import { UpdateProductUseCase } from '../core/use_cases/UpdateProductUseCase';
+import { DeleteProductUseCase } from '../core/use_cases/DeleteProductUseCase';
+import { GetProductByIdUseCase } from '../core/use_cases/GetProductByIdUseCase';
+import { ListProductsByCategoryUseCase } from '../core/use_cases/ListProductsByCategoryUseCase';
+import { MongoProductRepository } from '../external/database/mongoDB/persistence/MongoProductRepository';
 import ProductService from '../application/services/ProductService';
 
 // Importações para OrderService
-import { CreateOrderUseCase } from '../application/use_cases/CreateOrderUseCase';
-import { GetOrderPaymentStatusUseCase } from '../application/use_cases/GetOrderPaymentStatusUseCase';
-import { GetOrdersUseCase } from '../application/use_cases/GetOrdersUseCase';
-import { GetOrdersByStatusUseCase } from '../application/use_cases/GetOrdersByStatusUseCase';
-import { UpdateOrderStatusUseCase } from '../application/use_cases/UpdateOrderStatusUseCase'; // Nova importação
-import { MongoOrderRepository } from '../infrastructure/persistence/MongoOrderRepository';
+import { CreateOrderUseCase } from '../core/use_cases/CreateOrderUseCase';
+import { GetOrderPaymentStatusUseCase } from '../core/use_cases/GetOrderPaymentStatusUseCase';
+import { GetOrdersUseCase } from '../core/use_cases/GetOrdersUseCase';
+import { GetOrdersByStatusUseCase } from '../core/use_cases/GetOrdersByStatusUseCase';
+import { UpdateOrderStatusUseCase } from '../core/use_cases/UpdateOrderStatusUseCase'; // Nova importação
+import { MongoOrderRepository } from '../external/database/mongoDB/persistence/MongoOrderRepository';
 import OrderService from '../application/services/OrderService';
 
 // Importações para UserService
-import { CreateUserUseCase } from '../application/use_cases/CreateUserUseCase'; // Certifique-se de que esta importação exista
-import { GetUserByCpfUseCase } from '../application/use_cases/GetUserByCpfUseCase';
-import { MongoUserRepository } from '../infrastructure/persistence/MongoUserRepository';
+import { CreateUserUseCase } from '../core/use_cases/CreateUserUseCase'; // Certifique-se de que esta importação exista
+import { GetUserByCpfUseCase } from '../core/use_cases/GetUserByCpfUseCase';
+import { MongoUserRepository } from '../external/database/mongoDB/persistence/MongoUserRepository';
 import UserService from '../application/services/UserService';
 
 // Instanciando o repositório de produtos
@@ -75,7 +75,7 @@ const userService = new UserService(
 );
 
 // Importações para PaymentService
-import { CreatePixPaymentUseCase } from '../application/use_cases/CreatePixPaymentUseCase';
+import { CreatePixPaymentUseCase } from '../core/use_cases/CreatePixPaymentUseCase';
 import { PaymentService } from '../application/services/PaymentService';
 
 // Instanciando o serviço de pagamentos

@@ -1,5 +1,5 @@
 import { MercadoPagoConfig, Payment } from "mercadopago";
-import { Order } from "../../domain/entities/Order";
+import { Order } from "../../core/entities/Order";
 
 export class PaymentService {
   private payment: Payment;

@@ -1,6 +1,6 @@
-import { IUserRepository } from '../../domain/interfaces/IUserRepository';
-import { User } from '../../domain/entities/User';
-import UserModel from '../../infrastructure/frameworks/mongoose/models/UserModel';
+import { IUserRepository } from '../../../../adapters/repositories/IUserRepository';
+import { User } from '../../../../core/entities/User';
+import UserModel from '../frameworks/mongoose/models/UserModel';
 
 /**
  * Implementação concreta do repositório de usuários para MongoDB.

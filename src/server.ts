@@ -2,8 +2,8 @@ import "dotenv/config";
 import express from "express";
 import ngrok from "ngrok";
 import swaggerUi from "swagger-ui-express";
-import db from "../src/infrastructure/database/MongoDB";
-import swaggerSpecs from "./adapters/documentation/swaggerConfig";
+import db from "./external/database/mongoDB/MongoDB";
+import swaggerSpecs from "./pkg/documentation/swaggerConfig";
 import routes from "./routes/index";
 import PaymentService from "./application/services/PaymentService";
 
