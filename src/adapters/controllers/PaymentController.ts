@@ -3,7 +3,7 @@ import {
   createPixPaymentUseCase,
   getOrdersUseCase,
   updateOrderStatusUseCase
-} from "../../config/dependencyInjection"; // Importando os use cases diretamente
+} from "../../config/di/container"; // Importando os use cases diretamente
 import { fetchPaymentDetails, mapPaymentStatusToOrderStatus } from "../../pkg/middleware/utils";
 
 const router = express.Router();

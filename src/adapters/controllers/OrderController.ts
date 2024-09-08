@@ -5,7 +5,7 @@ import {
   getOrdersUseCase,
   getOrdersByStatusUseCase,
   updateOrderStatusUseCase
-} from "../../config/dependencyInjection"; // Importando os use cases diretamente
+} from "../../config/di/container"; // Importando os use cases diretamente
 
 const router = express.Router();
 
