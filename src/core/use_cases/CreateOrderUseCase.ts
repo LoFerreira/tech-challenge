@@ -2,6 +2,7 @@ import { IOrderRepository } from '../../adapters/repositories/IOrderRepository';
 import { IUserRepository } from '../../adapters/repositories/IUserRepository';
 import { IProductRepository } from '../../adapters/repositories/IProductRepository';
 import { Order } from '../entities/Order';
+import { OrderDTO } from '../dtos/OrderDTO';
 
 interface ProductOrder {
     productId: string;
@@ -15,7 +16,7 @@ export class CreateOrderUseCase {
         private productRepository: IProductRepository
     ) { }
 
-    async execute(userCpf: string, products: ProductOrder[]): Promise<Order> {
+    async execute(userCpf: string, products: ProductOrder[]): Promise<OrderDTO> {
         // Verificar se o usuário existe
         const user = await this.userRepository.findByCpf(userCpf);
         if (!user) {
@@ -35,21 +36,31 @@ export class CreateOrderUseCase {
 
         // Calcular o valor total do pedido
         const totalAmount = orderProducts.reduce((acc, product) => acc + (product.price * product.quantity), 0);
-        
-        
-        // Criar o pedido
+
+        // Criar a entidade Order
         const order = new Order(
-            'generated-id', // Será substituído pelo ID real ao salvar no repositório
-            user.id, 
+            'generated-id',
+            user.id,
             'OPENED',
             orderProducts,
             new Date(),
             'PENDING',
             totalAmount,
-            user 
+            user
         );
 
         // Salvar o pedido no repositório
-        return this.orderRepository.save(order);
+        const savedOrder = await this.orderRepository.save(order);
+
+        // Retornar um DTO
+        return {
+            id: savedOrder.id,
+            userId: savedOrder.userId,
+            status: savedOrder.status,
+            orderProducts: savedOrder.orderProducts,
+            createdAt: savedOrder.createdAt,
+            paymentStatus: savedOrder.paymentStatus,
+            totalAmount: savedOrder.totalAmount
+        };
     }
 }

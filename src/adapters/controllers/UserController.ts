@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { createUserUseCase, getUserByCpfUseCase } from "../../config/di/container"; // Importando os use cases diretamente
+import { UserDTO } from "../../core/dtos/UserDTO";
 
 const router = express.Router();
 
@@ -10,9 +11,9 @@ class UserController {
   */
   static createUser = async (req: Request, res: Response) => {
     try {
-      // Chamando diretamente o use case para criar o usuário
-      const savedUser = await createUserUseCase.execute(req.body);
-      res.status(201).send(savedUser);
+      // Chamando diretamente o use case para criar o usuário, passando o DTO
+      const userDTO: UserDTO = await createUserUseCase.execute(req.body);
+      res.status(201).send(userDTO);
     } catch (err: any) {
       res.status(500).send({ message: `${err.message} - Failure to register user.` });
     }
@@ -28,8 +29,12 @@ class UserController {
         throw new Error("CPF must be a string");
       }
       // Chamando diretamente o use case para buscar o usuário pelo CPF
-      const usersByCPF = await getUserByCpfUseCase.execute(cpf);
-      res.status(200).send(usersByCPF);
+      const userDTO: UserDTO | null = await getUserByCpfUseCase.execute(cpf);
+      if (userDTO) {
+        res.status(200).send(userDTO);
+      } else {
+        res.status(404).send({ message: "User not found" });
+      }
     } catch (err: any) {
       res.status(500).send({ message: err.message });
     }

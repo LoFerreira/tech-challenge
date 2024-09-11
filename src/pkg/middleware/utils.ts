@@ -10,7 +10,10 @@ export const OrderStatusTranslation: { [value: string]: string } = {
   CANCELED: "Cancelado",
 };
 
-// Função para buscar detalhes de pagamento
+/**
+ * Busca detalhes do pagamento via API do Mercado Pago.
+ * @param paymentId - O ID do pagamento.
+ */
 export const fetchPaymentDetails = async (paymentId: string): Promise<any> => {
   try {
     const response = await axios.get(
@@ -28,11 +31,14 @@ export const fetchPaymentDetails = async (paymentId: string): Promise<any> => {
   }
 };
 
-// Mapeia o status do pagamento para o status do pedido
+/**
+ * Mapeia o status do pagamento do Mercado Pago para o status do pedido na aplicação.
+ * @param paymentStatus - Status retornado pela API do Mercado Pago.
+ */
 export const mapPaymentStatusToOrderStatus = (paymentStatus: string): string => {
   const statusMap: { [key: string]: string } = {
     approved: "PAID",
-    cancelled: "UNPAID",
+    cancelled: "CANCELED",
     pending: "PENDING",
     in_process: "PROCESSING",
     rejected: "REJECTED",

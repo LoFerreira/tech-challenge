@@ -6,26 +6,19 @@ import {
   deleteProductUseCase,
   getProductByIdUseCase,
   listProductsByCategoryUseCase,
-} from "../../config/di/container"; // Importando os use cases diretamente
+} from "../../config/di/container"; 
+import { ProductDTO } from "../../core/dtos/ProductDTO";  // Importando o DTO
 
 const router = express.Router();
-
-// Configuração do multer para upload de arquivos
 const upload = multer({ dest: "uploads/" });
 
-/*[APIS PRODUTO]*/
 class ProductController {
-  /*[CRIAR PRODUTO]
-    Cria um novo produto a partir dos dados enviados na requisição.
-    O caminho da imagem do produto é salvo através do multer.
-  */
   static createProduct = async (req: Request, res: Response) => {
     const { name, category, price, description } = req.body;
     const imagePath = req.file?.path || "";
 
     try {
-      // Chamando diretamente o use case para criar o produto
-      const newProduct = await createProductUseCase.execute({
+      const newProduct: ProductDTO = await createProductUseCase.execute({
         name,
         category,
         price,
@@ -40,17 +33,13 @@ class ProductController {
     }
   };
 
-  /*[ATUALIZAR PRODUTO]
-    Atualiza as informações de um produto existente com base no ID fornecido.
-  */
   static updateProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { name, category, price, description } = req.body;
     const imagePath = req.file?.path || "";
 
     try {
-      // Chamando diretamente o use case para atualizar o produto
-      const response = await updateProductUseCase.execute({
+      const updatedProduct: ProductDTO | null = await updateProductUseCase.execute({
         id,
         name,
         category,
@@ -60,48 +49,43 @@ class ProductController {
         mimetype: req.file?.mimetype || "",
       });
 
-      res.status(200).send(response);
+      if (!updatedProduct) {
+        return res.status(404).send({ message: "Product not found" });
+      }
+
+      res.status(200).send(updatedProduct);
     } catch (error: any) {
       res.status(500).send({ message: error.message });
     }
   };
 
-  /*[DELETAR PRODUTO]
-    Deleta um produto existente com base no ID fornecido.
-  */
   static deleteProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-      // Chamando diretamente o use case para deletar o produto
-      const message = await deleteProductUseCase.execute(id);
-      res.status(200).send(message);
+      await deleteProductUseCase.execute(id);
+      res.status(200).send({ message: "Product deleted successfully" });
     } catch (err: any) {
       res.status(500).send({ message: err.message });
     }
   };
 
-  /*[BUSCA PRODUTO PELO ID]
-    Busca um produto existente com base no ID fornecido.
-  */
   static getProductById = async (req: Request, res: Response) => {
     const { productId } = req.params;
     try {
-      // Chamando diretamente o use case para obter o produto pelo ID
-      const product = await getProductByIdUseCase.execute(String(productId));
+      const product: ProductDTO | null = await getProductByIdUseCase.execute(String(productId));
+      if (!product) {
+        return res.status(404).send({ message: "Product not found" });
+      }
       res.status(200).send(product);
     } catch (err: any) {
       res.status(500).send({ message: err.message });
     }
   };
 
-  /*[LISTAR PRODUTOS POR CATEGORIA]
-    Lista todos os produtos de uma categoria específica.
-  */
   static listProductByCategory = async (req: Request, res: Response) => {
     const { category } = req.params;
     try {
-      // Chamando diretamente o use case para listar produtos por categoria
-      const productsByCategory = await listProductsByCategoryUseCase.execute(category);
+      const productsByCategory: ProductDTO[] = await listProductsByCategoryUseCase.execute(category);
       res.status(200).send(productsByCategory);
     } catch (err: any) {
       res.status(500).send({ message: err.message });
@@ -109,8 +93,6 @@ class ProductController {
   };
 }
 
-/*[DEFININDO ENDPOINTS DE PRODUTO]*/
-// Definindo as rotas para os endpoints de produto
 router.get("/products/:productId", ProductController.getProductById);
 router.get("/products/category/:category", ProductController.listProductByCategory);
 router.post("/products", upload.single("image"), ProductController.createProduct);

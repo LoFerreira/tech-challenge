@@ -2,9 +2,10 @@ import express, { Request, Response } from "express";
 import {
   createPixPaymentUseCase,
   getOrdersUseCase,
-  updateOrderStatusUseCase
-} from "../../config/di/container"; // Importando os use cases diretamente
+  updateOrderStatusUseCase,
+} from "../../config/di/container"; 
 import { fetchPaymentDetails, mapPaymentStatusToOrderStatus } from "../../pkg/middleware/utils";
+import { Order } from "../../core/entities/Order";
 
 const router = express.Router();
 
@@ -22,10 +23,21 @@ class PaymentController {
       }
 
       // Busca o pedido diretamente pelo use case
-      const order = await getOrdersUseCase.getOrderById(orderId);
-      if (!order) {
+      const orderDTO = await getOrdersUseCase.getOrderById(orderId);
+      if (!orderDTO) {
         return res.status(404).json({ error: "Pedido não encontrado" });
       }
+
+      // Converter OrderDTO para Order (entidade completa)
+      const order = new Order(
+        orderDTO.id,
+        orderDTO.userId,
+        orderDTO.status,
+        orderDTO.orderProducts,
+        new Date(orderDTO.createdAt),
+        orderDTO.paymentStatus,
+        orderDTO.totalAmount
+      );
 
       // Processa o pagamento Pix utilizando o use case apropriado
       const response = await createPixPaymentUseCase.execute(order);
@@ -37,9 +49,7 @@ class PaymentController {
     }
   };
 
-  /*[WEBHOOK DE ATUALIZAÇÃO DO STATUS DE PAGAMENTO]
-    Recebe notificações de pagamento via webhook, atualiza o status do pedido com base no status de pagamento.
-  */
+  // [WEBHOOK para atualizações]
   static webhook = async (req: Request, res: Response) => {
     try {
       const notification = req.body;
@@ -55,7 +65,6 @@ class PaymentController {
         const orderId = paymentDetails.external_reference;
         const orderPaymentStatus = mapPaymentStatusToOrderStatus(paymentDetails.status);
 
-        // Define o novo status do pedido com base no status de pagamento
         let orderStatus = "OPENED";
         if (orderPaymentStatus === "PAID") {
           orderStatus = "RECEIVED";
@@ -63,7 +72,6 @@ class PaymentController {
           orderStatus = "CANCELED";
         }
 
-        // Atualiza o status do pedido diretamente pelo use case
         await updateOrderStatusUseCase.execute(orderId, {
           payment: orderPaymentStatus,
           status: orderStatus,
@@ -78,7 +86,6 @@ class PaymentController {
   };
 }
 
-// Definindo as rotas para os endpoints de pagamento
 router.post("/webhook", PaymentController.webhook);
 router.post("/orderPayment", PaymentController.orderPayment);
 

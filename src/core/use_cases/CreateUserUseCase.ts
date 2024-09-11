@@ -1,5 +1,6 @@
 import { IUserRepository } from '../../adapters/repositories/IUserRepository';
 import { User } from '../entities/User';
+import { UserDTO } from '../dtos/UserDTO';
 
 /**
  * Dados de entrada para criar um novo usuário.
@@ -14,20 +15,28 @@ interface CreateUserRequest {
  * Caso de uso para criar um novo usuário.
  */
 export class CreateUserUseCase {
-    constructor(private userRepository: IUserRepository) { }
+    constructor(private userRepository: IUserRepository) {}
 
     /**
      * Executa o caso de uso de criação de usuário.
      * @param request Dados para criação do usuário.
      * @returns Instância do usuário criado.
      */
-    async execute(request: CreateUserRequest): Promise<User> {
+    async execute(request: CreateUserRequest): Promise<UserDTO> {
         const { name, cpf, email } = request;
 
-        // Criar uma nova instância do usuário
+        // Criar uma nova instância do usuário (entidade de domínio)
         const user = new User('generated-id', name, cpf, email);
 
         // Salvar o usuário no repositório
-        return await this.userRepository.create(user);
+        const savedUser = await this.userRepository.create(user);
+
+        // Retornar um DTO em vez da entidade de domínio
+        return {
+            id: savedUser.id,
+            name: savedUser.name,
+            cpf: savedUser.cpf,
+            email: savedUser.email,
+        };
     }
 }
