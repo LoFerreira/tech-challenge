@@ -1,86 +1,91 @@
 import express, { Request, Response } from "express";
 import multer from "multer";
-import ProductService from "../../domain/service/ProductService";
+import {
+  createProductUseCase,
+  updateProductUseCase,
+  deleteProductUseCase,
+  getProductByIdUseCase,
+  listProductsByCategoryUseCase,
+} from "../../config/di/container"; 
+import { ProductDTO } from "../dtos/ProductDTO";  // Importando o DTO
 
 const router = express.Router();
-
 const upload = multer({ dest: "uploads/" });
 
-/*[APIS PRODUTO]*/
 class ProductController {
-  /*[CRIAR PRODUTO]*/
   static createProduct = async (req: Request, res: Response) => {
     const { name, category, price, description } = req.body;
-    const imagePath = req?.file?.path || "";
+    const imagePath = req.file?.path || "";
 
     try {
-      const newProduct = await ProductService.createProduct({
+      const newProduct: ProductDTO = await createProductUseCase.execute({
         name,
         category,
         price,
         description,
         imagePath,
-        mimetype: req?.file?.mimetype,
+        mimetype: req.file?.mimetype || "",
       });
 
       res.status(201).send(newProduct);
     } catch (error: any) {
-      res.status(500).send({ message: error?.message });
+      res.status(500).send({ message: error.message });
     }
   };
 
-  /*[ATUALIZAR PRODUTO]*/
   static updateProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { name, category, price, description } = req.body;
-    const imagePath = req?.file?.path || "";
+    const imagePath = req.file?.path || "";
 
     try {
-      const response = await ProductService.updateProduct({
+      const updatedProduct: ProductDTO | null = await updateProductUseCase.execute({
         id,
         name,
         category,
         price,
         description,
         imagePath,
-        mimetype: req?.file?.mimetype,
+        mimetype: req.file?.mimetype || "",
       });
 
-      res.status(200).send(response);
+      if (!updatedProduct) {
+        return res.status(404).send({ message: "Product not found" });
+      }
+
+      res.status(200).send(updatedProduct);
     } catch (error: any) {
-      res.status(500).send({ message: error?.message });
+      res.status(500).send({ message: error.message });
     }
   };
 
-  /*[DELETAR PRODUTO]*/
   static deleteProduct = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-      const message = await ProductService.deleteProduct(id);
-      res.status(200).send(message);
+      await deleteProductUseCase.execute(id);
+      res.status(200).send({ message: "Product deleted successfully" });
     } catch (err: any) {
       res.status(500).send({ message: err.message });
     }
   };
 
-  /*[BUSCA PRODUTO PELO ID]*/
   static getProductById = async (req: Request, res: Response) => {
     const { productId } = req.params;
     try {
-      const product = await ProductService.getProductByID(String(productId));
+      const product: ProductDTO | null = await getProductByIdUseCase.execute(String(productId));
+      if (!product) {
+        return res.status(404).send({ message: "Product not found" });
+      }
       res.status(200).send(product);
     } catch (err: any) {
       res.status(500).send({ message: err.message });
     }
   };
 
-  /*[LISTAR PRODUTOS POR CATEGORIA PRODUTO]*/
   static listProductByCategory = async (req: Request, res: Response) => {
     const { category } = req.params;
     try {
-      const productsByCategory = await ProductService.listProductsByCategory(
-        category
-      );
+      const productsByCategory: ProductDTO[] = await listProductsByCategoryUseCase.execute(category);
       res.status(200).send(productsByCategory);
     } catch (err: any) {
       res.status(500).send({ message: err.message });
@@ -88,22 +93,10 @@ class ProductController {
   };
 }
 
-/*[DEFININDO ENDPOINTS DE PRODUTO]*/
 router.get("/products/:productId", ProductController.getProductById);
-router.get(
-  "/products/category/:category",
-  ProductController.listProductByCategory
-);
-router.post(
-  "/products",
-  upload.single("image"),
-  ProductController.createProduct
-);
-router.put(
-  "/products/:id",
-  upload.single("image"),
-  ProductController.updateProduct
-);
+router.get("/products/category/:category", ProductController.listProductByCategory);
+router.post("/products", upload.single("image"), ProductController.createProduct);
+router.put("/products/:id", upload.single("image"), ProductController.updateProduct);
 router.delete("/products/:id", ProductController.deleteProduct);
 
 export default router;

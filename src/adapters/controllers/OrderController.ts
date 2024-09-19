@@ -1,9 +1,17 @@
 import express, { Request, Response } from "express";
-import OrderService from "../../domain/service/OrderService";
+import {
+  createOrderUseCase,
+  getOrderPaymentStatusUseCase,
+  getOrdersUseCase,
+  getOrdersByStatusUseCase,
+  updateOrderStatusUseCase
+} from "../../config/di/container"; 
+import { OrderDTO } from "../dtos/OrderDTO";
 
 const router = express.Router();
+
 class OrderController {
-  /*[CRIAR ORDER]*/
+  /*[CRIAR ORDER] */
   static createOrder = async (req: Request, res: Response) => {
     const { userCpf, products } = req.body;
 
@@ -12,65 +20,75 @@ class OrderController {
     }
 
     try {
-      const newOrder = await OrderService.createOrder({
-        userCpf,
-        products,
-      });
-
+      // Chamando o use case diretamente para criar o pedido
+      const newOrder: OrderDTO = await createOrderUseCase.execute(userCpf, products);
       res.status(201).send(newOrder);
     } catch (error: any) {
-      res.status(500).send({ message: error?.message });
+      res.status(500).send({ message: error.message });
     }
   };
 
-  /*[CONSULTAR STATUS DO PAGAMENTO DO PEDIDO]*/
+  /*[CONSULTAR STATUS DO PAGAMENTO DO PEDIDO] */
   static getOrderPaymentStatus = async (req: Request, res: Response) => {
     const { orderId } = req.query;
-    console.log(orderId);
+
     try {
-      const response = await OrderService.getOrderPaymentStatus(orderId);
-      res.status(200).send(response);
+      const response = await getOrderPaymentStatusUseCase.execute(String(orderId));
+      res.status(200).send({ paymentStatus: response });
     } catch (err: any) {
       res.status(500).send({ message: err.message });
     }
   };
 
-  /*[LISTAR ORDERS]*/
+  /*[LISTAR TODOS OS PEDIDOS] */
   static getOrders = async (req: Request, res: Response) => {
     try {
-      const orders = await OrderService.getOrders();
+      const orders: OrderDTO[] = await getOrdersUseCase.execute();
       res.status(200).send(orders);
     } catch (err: any) {
       res.status(500).send({ message: err.message });
     }
   };
 
-  /*[LISTAR ORDERS POR STATUS]*/
+  /*[LISTAR PEDIDOS POR STATUS] */
   static getOrderByStatus = async (req: Request, res: Response) => {
     const { status } = req.query;
 
     try {
-      const ordersByStatus = await OrderService.getOrdersByStatus(status);
+      let statusArray: string[];
+
+      if (typeof status === "string") {
+        statusArray = [status];
+      } else if (Array.isArray(status)) {
+        statusArray = status as string[];
+      } else {
+        return res.status(400).send({ message: "Invalid status parameter" });
+      }
+
+      const ordersByStatus: OrderDTO[] = await getOrdersByStatusUseCase.execute(statusArray);
       res.status(200).send(ordersByStatus);
     } catch (err: any) {
       res.status(500).send({ message: err.message });
     }
   };
 
-  static async updateOrderStatus(req, res) {
+  /*[ATUALIZAR STATUS DO PEDIDO] */
+  static updateOrderStatus = async (req: Request, res: Response) => {
     const orderId = req.params.id;
-    const { status } = req.body;
+    const { payment, status } = req.body;
 
     try {
-      const order = await OrderService.updateOrderStatus({ orderId, status });
-      return res
-        .status(200)
-        .json({ message: "Order status updated successfully", order });
+      const updatedOrder: OrderDTO | null = await updateOrderStatusUseCase.execute(orderId, { payment, status });
+      
+      if (!updatedOrder) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+
+      return res.status(200).json({ message: "Order status updated successfully", order: updatedOrder });
     } catch (error: any) {
-      console.error("Error updating order status:", error);
       return res.status(500).json({ error: error.message });
     }
-  }
+  };
 }
 
 router.get("/orders", OrderController.getOrders);
