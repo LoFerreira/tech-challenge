@@ -69,7 +69,6 @@ export class MongoOrderRepository implements IOrderRepository {
       .lean();
 
     return ordersData.map((orderData) => {
-      const userData = orderData.user as User;
       const orderProductsData = orderData.orderProducts.map((orderProduct) => ({
         product: orderProduct.product,
         price: orderProduct.price,
@@ -78,12 +77,7 @@ export class MongoOrderRepository implements IOrderRepository {
 
       return new Order(
         orderData._id.toString(),
-        new User(
-          userData._id.toString(), // Assuming this is the user ID
-          userData.name, // Adjust with actual field names
-          userData.cpf, // Adjust with actual field names
-          userData.email // Adjust with actual field names
-        ),
+        orderData.user,
         orderData.status,
         orderProductsData,
         orderData.createdAt,
