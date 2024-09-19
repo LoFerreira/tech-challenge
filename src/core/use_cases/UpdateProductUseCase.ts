@@ -1,6 +1,6 @@
 import { IProductRepository } from '../../adapters/repositories/IProductRepository';
 import { Product } from '../entities/Product';
-import { ProductDTO } from '../dtos/ProductDTO';
+import { ProductDTO } from '../../adapters/dtos/ProductDTO';
 import fs from 'fs';
 
 interface UpdateProductRequest {

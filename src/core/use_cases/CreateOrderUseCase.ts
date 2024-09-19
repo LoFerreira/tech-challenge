@@ -2,7 +2,7 @@ import { IOrderRepository } from '../../adapters/repositories/IOrderRepository';
 import { IUserRepository } from '../../adapters/repositories/IUserRepository';
 import { IProductRepository } from '../../adapters/repositories/IProductRepository';
 import { Order } from '../entities/Order';
-import { OrderDTO } from '../dtos/OrderDTO';
+import { OrderDTO } from '../../adapters/dtos/OrderDTO';
 
 interface ProductOrder {
     productId: string;

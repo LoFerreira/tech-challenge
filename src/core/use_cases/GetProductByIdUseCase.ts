@@ -1,5 +1,5 @@
 import { IProductRepository } from '../../adapters/repositories/IProductRepository';
-import { ProductDTO } from '../dtos/ProductDTO';
+import { ProductDTO } from '../../adapters/dtos/ProductDTO';
 import { Product } from '../entities/Product';
 
 export class GetProductByIdUseCase {

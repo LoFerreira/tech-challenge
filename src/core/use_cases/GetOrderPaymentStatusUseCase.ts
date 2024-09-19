@@ -1,5 +1,5 @@
 import { IOrderRepository } from '../../adapters/repositories/IOrderRepository';
-import { OrderDTO } from '../dtos/OrderDTO';
+import { OrderDTO } from '../../adapters/dtos/OrderDTO';
 
 export class GetOrderPaymentStatusUseCase {
     constructor(private orderRepository: IOrderRepository) { }

@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { createUserUseCase, getUserByCpfUseCase } from "../../config/di/container"; // Importando os use cases diretamente
-import { UserDTO } from "../../core/dtos/UserDTO";
+import { UserDTO } from "../dtos/UserDTO";
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 import { IUserRepository } from '../../adapters/repositories/IUserRepository';
-import { UserDTO } from '../dtos/UserDTO';
+import { UserDTO } from '../../adapters/dtos/UserDTO';
 import { User } from '../entities/User';
 
 /**

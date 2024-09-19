@@ -6,7 +6,7 @@ import {
   getOrdersByStatusUseCase,
   updateOrderStatusUseCase
 } from "../../config/di/container"; 
-import { OrderDTO } from "../../core/dtos/OrderDTO";
+import { OrderDTO } from "../dtos/OrderDTO";
 
 const router = express.Router();
 

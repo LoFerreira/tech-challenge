@@ -1,5 +1,5 @@
 import { IOrderRepository } from '../../adapters/repositories/IOrderRepository';
-import { OrderDTO } from '../dtos/OrderDTO';
+import { OrderDTO } from '../../adapters/dtos/OrderDTO';
 import { Order } from '../entities/Order';
 
 export class GetOrdersUseCase {

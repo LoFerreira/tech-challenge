@@ -7,7 +7,7 @@ import {
   getProductByIdUseCase,
   listProductsByCategoryUseCase,
 } from "../../config/di/container"; 
-import { ProductDTO } from "../../core/dtos/ProductDTO";  // Importando o DTO
+import { ProductDTO } from "../dtos/ProductDTO";  // Importando o DTO
 
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });

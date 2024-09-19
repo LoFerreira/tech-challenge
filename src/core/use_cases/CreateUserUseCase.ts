@@ -1,6 +1,6 @@
 import { IUserRepository } from '../../adapters/repositories/IUserRepository';
 import { User } from '../entities/User';
-import { UserDTO } from '../dtos/UserDTO';
+import { UserDTO } from '../../adapters/dtos/UserDTO';
 
 /**
  * Dados de entrada para criar um novo usuário.
