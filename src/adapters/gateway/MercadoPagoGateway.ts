@@ -31,7 +31,7 @@ export class PaymentService {
       const response = await this.payment.create({
         body: {
           transaction_amount: order.totalAmount,
-          description: `Pagamento do pedido ${order.id}`,
+          description: `Pagamento do pedido ${order._id}`,
           payment_method_id: "pix",
           payer: {
             email: "teste@teste.com",//order.user.email,
@@ -43,7 +43,7 @@ export class PaymentService {
           },
           notification_url: PaymentService.webhookUrl,
         },
-        requestOptions: { idempotencyKey: order.id },
+        requestOptions: { idempotencyKey: order._id },
       });
 
       return response;
