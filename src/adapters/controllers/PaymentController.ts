@@ -6,6 +6,7 @@ import {
 } from "../../config/di/container"; 
 import { fetchPaymentDetails, mapPaymentStatusToOrderStatus } from "../../pkg/middleware/utils";
 import { Order } from "../../core/entities/Order";
+import { ORDER_STATUSES } from "../../external/database/mongoDB/frameworks/mongoose/models/OrderModel";
 
 const router = express.Router();
 
@@ -65,11 +66,13 @@ class PaymentController {
         const orderId = paymentDetails.external_reference;
         const orderPaymentStatus = mapPaymentStatusToOrderStatus(paymentDetails.status);
 
-        let orderStatus = "OPENED";
+        // Use o tipo correto para 'orderStatus'
+        let orderStatus: (typeof ORDER_STATUSES)[number] = ORDER_STATUSES[0]; // "OPENED"
+
         if (orderPaymentStatus === "PAID") {
-          orderStatus = "RECEIVED";
+          orderStatus = ORDER_STATUSES[1]; // "RECEIVED"
         } else if (orderPaymentStatus === "CANCELED") {
-          orderStatus = "CANCELED";
+          orderStatus = ORDER_STATUSES[5]; // "CANCELED"
         }
 
         await updateOrderStatusUseCase.execute(orderId, {

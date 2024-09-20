@@ -10,7 +10,6 @@ export const ORDER_STATUSES = [
   "CANCELED",
 ] as const;
 
-
 export const PAYMENT_STATUSES = [
   "PENDING",
   "PROCESSING",

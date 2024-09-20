@@ -3,6 +3,7 @@ import { IUserRepository } from '../../adapters/repositories/IUserRepository';
 import { IProductRepository } from '../../adapters/repositories/IProductRepository';
 import { Order } from '../entities/Order';
 import { OrderDTO } from '../../adapters/dtos/OrderDTO';
+import { ORDER_STATUSES, PAYMENT_STATUSES } from '../../external/database/mongoDB/frameworks/mongoose/models/OrderModel';
 
 interface ProductOrder {
     productId: string;
@@ -23,16 +24,22 @@ export class CreateOrderUseCase {
             throw new Error('User not found');
         }
 
-        // Verificar e obter detalhes dos produtos
         const orderProducts = await Promise.all(
             products.map(async (product) => {
                 const productData = await this.productRepository.findById(product.productId);
                 if (!productData) {
                     throw new Error(`Product with ID ${product.productId} not found`);
                 }
-                return { productId: productData.id, quantity: product.quantity, price: productData.price };
+
+                // Retornando o objeto `Product` completo
+                return {
+                    product: productData, // Passar o objeto Product completo
+                    quantity: product.quantity,
+                    price: productData.price
+                };
             })
         );
+
 
         // Calcular o valor total do pedido
         const totalAmount = orderProducts.reduce((acc, product) => acc + (product.price * product.quantity), 0);
@@ -40,12 +47,12 @@ export class CreateOrderUseCase {
         // Criar a entidade Order
         const order = new Order(
             'generated-id',
-            user,
-            'OPENED',
-            orderProducts,
-            new Date(),
-            'PENDING',
-            totalAmount,
+            user, // Objeto User
+            ORDER_STATUSES[0], // Status inicial como "OPENED"
+            orderProducts, // Lista de { product: Product, quantity: number, price: number }
+            new Date(), // Data de criação
+            PAYMENT_STATUSES[0], // Status de pagamento "PENDING"
+            totalAmount // Total calculado
         );
 
         // Salvar o pedido no repositório
