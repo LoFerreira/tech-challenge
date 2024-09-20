@@ -142,8 +142,8 @@ export class MongoOrderRepository implements IOrderRepository {
         quantity: orderProduct.quantity,
       })),
       updatedOrderData.createdAt,
+      updatedOrderData.paymentStatus,
       updatedOrderData.totalAmount,
-      updatedOrderData.paymentStatus
     );
   }
 }
