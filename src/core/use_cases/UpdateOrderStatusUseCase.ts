@@ -7,16 +7,31 @@ export class UpdateOrderStatusUseCase {
     constructor(private orderRepository: IOrderRepository) {}
 
     async execute(orderId: string, updateData: { payment?: string; status?: (typeof ORDER_STATUSES)[number] }): Promise<OrderDTO | null> {
-        // Atualizar o pedido com os novos dados fornecidos
-        const updatedOrder: Order | null = await this.orderRepository.updateById(orderId, updateData);
+        try {
+            // Verificar se o orderId foi fornecido
+            if (!orderId) {
+                throw new Error("Order ID must be provided");
+            }
 
-        // Se o pedido não foi encontrado, retornar null
-        if (!updatedOrder) {
-            return null;
+            // Verificar se pelo menos um dos campos de atualização foi fornecido
+            if (!updateData.payment && !updateData.status) {
+                throw new Error("At least one field (payment or status) must be provided for update");
+            }
+
+            // Atualizar o pedido com os novos dados fornecidos
+            const updatedOrder: Order | null = await this.orderRepository.updateById(orderId, updateData);
+
+            // Se o pedido não foi encontrado, lançar erro
+            if (!updatedOrder) {
+                throw new Error("Order not found");
+            }
+
+            // Converter o pedido atualizado para DTO
+            return this.toDTO(updatedOrder);
+        } catch (error: any) {
+            // Captura de erros e lançamento de mensagem apropriada
+            throw new Error(`Failed to update order status: ${error.message}`);
         }
-
-        // Converter o pedido atualizado para DTO
-        return this.toDTO(updatedOrder);
     }
 
     // Método privado para converter a entidade Order em OrderDTO
