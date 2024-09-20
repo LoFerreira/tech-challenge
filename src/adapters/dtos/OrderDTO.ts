@@ -1,9 +1,17 @@
+import { Product } from "../../core/entities/Product";
+import { User } from "../../core/entities/User";
+import { PAYMENT_STATUSES, ORDER_STATUSES } from "../../external/database/mongoDB/frameworks/mongoose/models/OrderModel";
+
 export interface OrderDTO {
-  id: string;
-  userId: string;
-  status: string;
-  orderProducts: Array<{ productId: string; quantity: number; price: number }>;
+  _id: string;
+  user: User;
+  status: typeof ORDER_STATUSES;
+  orderProducts: Array<{
+    product: Product;
+    quantity: number;
+    price: number;
+  }>;
   createdAt: Date;
-  paymentStatus: string;
+  paymentStatus: typeof PAYMENT_STATUSES;
   totalAmount: number;
 }
