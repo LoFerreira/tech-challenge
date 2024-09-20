@@ -40,13 +40,12 @@ export class CreateOrderUseCase {
         // Criar a entidade Order
         const order = new Order(
             'generated-id',
-            user.id,
+            user,
             'OPENED',
             orderProducts,
             new Date(),
             'PENDING',
             totalAmount,
-            user
         );
 
         // Salvar o pedido no repositório
@@ -54,8 +53,8 @@ export class CreateOrderUseCase {
 
         // Retornar um DTO
         return {
-            id: savedOrder.id,
-            userId: savedOrder.userId,
+            _id: savedOrder._id,
+            user: savedOrder.user,
             status: savedOrder.status,
             orderProducts: savedOrder.orderProducts,
             createdAt: savedOrder.createdAt,

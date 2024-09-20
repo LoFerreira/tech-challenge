@@ -30,8 +30,8 @@ class PaymentController {
 
       // Converter OrderDTO para Order (entidade completa)
       const order = new Order(
-        orderDTO.id,
-        orderDTO.userId,
+        orderDTO._id,
+        orderDTO.user,
         orderDTO.status,
         orderDTO.orderProducts,
         new Date(orderDTO.createdAt),

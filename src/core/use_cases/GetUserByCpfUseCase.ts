@@ -24,7 +24,7 @@ export class GetUserByCpfUseCase {
 
         // Converter a entidade User para UserDTO
         const userDTO: UserDTO = {
-            id: user.id,
+            id: user._id,
             name: user.name,
             cpf: user.cpf,
             email: user.email

@@ -6,14 +6,14 @@ export class Order {
   constructor(
     public _id: string,
     public user: User,
-    public status: typeof ORDER_STATUSES,
+    public status: (typeof ORDER_STATUSES)[number],
     public orderProducts: Array<{
       product: Product;
       quantity: number;
       price: number;
     }>,
     public createdAt: Date,
-    public paymentStatus: typeof PAYMENT_STATUSES,
+    public paymentStatus: (typeof PAYMENT_STATUSES)[number],
     public totalAmount: number
   ) {}
 }

@@ -33,7 +33,7 @@ export class CreateUserUseCase {
 
         // Retornar um DTO em vez da entidade de domínio
         return {
-            id: savedUser.id,
+            id: savedUser._id,
             name: savedUser.name,
             cpf: savedUser.cpf,
             email: savedUser.email,
