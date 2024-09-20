@@ -123,7 +123,7 @@ export class MongoOrderRepository implements IOrderRepository {
     orderId: string,
     updateData: Partial<Order>
   ): Promise<Order | null> {
-    const updatedOrderData: Order | NULL = await OrderModel.findByIdAndUpdate(
+    const updatedOrderData: Order | null = await OrderModel.findByIdAndUpdate(
       orderId,
       updateData,
       { new: true }
@@ -132,7 +132,6 @@ export class MongoOrderRepository implements IOrderRepository {
       .populate("orderProducts.product")
       .lean();
     if (!updatedOrderData) return null;
-
     return new Order(
       (updatedOrderData._id as unknown as string).toString(),
       updatedOrderData.user,

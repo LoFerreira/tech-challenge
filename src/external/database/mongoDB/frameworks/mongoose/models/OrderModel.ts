@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 // Define possíveis valores para status e pagamento
-const ORDER_STATUSES = [
+export const ORDER_STATUSES = [
   "OPENED",
   "RECEIVED",
   "PREPARING",
@@ -9,6 +9,8 @@ const ORDER_STATUSES = [
   "FINISHED",
   "CANCELED",
 ] as const;
+
+
 export const PAYMENT_STATUSES = [
   "PENDING",
   "PROCESSING",
