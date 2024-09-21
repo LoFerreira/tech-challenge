@@ -5,13 +5,13 @@ import { PAYMENT_STATUSES, ORDER_STATUSES } from "../../external/database/mongoD
 export interface OrderDTO {
   _id: string;
   user: User;
-  status: typeof ORDER_STATUSES;
+  status: (typeof ORDER_STATUSES)[number];
   orderProducts: Array<{
     product: Product;
     quantity: number;
     price: number;
   }>;
   createdAt: Date;
-  paymentStatus: typeof PAYMENT_STATUSES;
+  paymentStatus: (typeof PAYMENT_STATUSES)[number];
   totalAmount: number;
 }

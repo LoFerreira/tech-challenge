@@ -30,16 +30,16 @@ export class MongoOrderRepository implements IOrderRepository {
   async save(order: any): Promise<Order> {
     // Create a new OrderModel instance
     const orderModel = new OrderModel({
-      user: order?.userId,
-      status: order.status,
-      orderProducts: order?.orderProducts?.map((p) => ({
-        product: p.productId,
-        quantity: p.quantity,
-        price: p.price,
-      })),
-      createdAt: order.createdAt,
-      payment: order.paymentStatus,
-      totalAmount: order.totalAmount,
+        user: order?.user?._id, // Aqui garantimos que o campo user está sendo passado corretamente como ID
+        status: order.status,
+        orderProducts: order?.orderProducts?.map((p) => ({
+            product: p.product._id, // Aqui garantimos que o produto está sendo salvo como ID
+            quantity: p.quantity,
+            price: p.price,
+        })),
+        createdAt: order.createdAt,
+        payment: order.paymentStatus,
+        totalAmount: order.totalAmount,
     });
 
     // Save the order in the database
@@ -54,6 +54,7 @@ export class MongoOrderRepository implements IOrderRepository {
     // Return the new Order instance
     return new Order(
       (populatedOrder._id as unknown as string).toString(),
+      populatedOrder.user,
       populatedOrder.status,
       populatedOrder.orderProducts.map((p) => ({
         product: p.product,
@@ -62,10 +63,10 @@ export class MongoOrderRepository implements IOrderRepository {
       })),
       populatedOrder.createdAt,
       populatedOrder.payment,
-      populatedOrder.totalAmount,
-      populatedOrder.user
+      populatedOrder.totalAmount
     );
-  }
+}
+
 
   async findByStatus(status: string[]): Promise<Order[]> {
     const ordersData: Order[] = await OrderModel.find({
