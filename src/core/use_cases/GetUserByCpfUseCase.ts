@@ -12,25 +12,35 @@ export class GetUserByCpfUseCase {
      * Executa o caso de uso de busca de usuário por CPF.
      * @param cpf CPF do usuário.
      * @returns UserDTO contendo os dados do usuário ou null se não encontrado.
+     * @throws Error se o CPF for inválido ou ocorrer algum erro na busca.
      */
     async execute(cpf: string): Promise<UserDTO | null> {
-        // Buscar o usuário pelo CPF no repositório
-        const user: User | null = await this.userRepository.findByCpf(cpf);
-        
-        // Se o usuário não for encontrado, retornar null
-        if (!user) {
-            return null;
+        // Validação do CPF
+        if (typeof cpf !== 'string' || cpf.trim().length === 0) {
+            throw new Error("CPF must be a non-empty string");
         }
 
-        // Converter a entidade User para UserDTO
-        const userDTO: UserDTO = {
-            id: user._id,
-            name: user.name,
-            cpf: user.cpf,
-            email: user.email
-        };
+        try {
+            // Buscar o usuário pelo CPF no repositório
+            const user: User | null = await this.userRepository.findByCpf(cpf);
+            
+            // Se o usuário não for encontrado, retornar null
+            if (!user) {
+                return null;
+            }
 
-        // Retornar o UserDTO
-        return userDTO;
+            // Converter a entidade User para UserDTO
+            const userDTO: UserDTO = {
+                id: user._id,
+                name: user.name,
+                cpf: user.cpf,
+                email: user.email
+            };
+
+            // Retornar o UserDTO
+            return userDTO;
+        } catch (error: any) {
+            throw new Error(`Failure to fetch user by CPF: ${error.message}`);
+        }
     }
 }
