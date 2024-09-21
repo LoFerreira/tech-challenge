@@ -18,25 +18,30 @@ export class CreateProductUseCase {
     /**
      * Executa a criação de um novo produto.
      * Converte a imagem em Base64 e retorna o produto criado como DTO.
+     * Caso ocorra um erro durante a criação ou processamento da imagem, ele será tratado aqui.
      */
     async execute(request: CreateProductRequest): Promise<ProductDTO> {
         const { name, category, price, description, imagePath, mimetype } = request;
 
-        // Ler o arquivo de imagem e converter para Base64
-        const imageBase64 = fs.readFileSync(imagePath, { encoding: 'base64' });
-        const imageDataUri = `data:${mimetype};base64,${imageBase64}`;
+        try {
+            // Ler o arquivo de imagem e converter para Base64
+            const imageBase64 = fs.readFileSync(imagePath, { encoding: 'base64' });
+            const imageDataUri = `data:${mimetype};base64,${imageBase64}`;
 
-        // Criar uma nova entidade Product
-        const product = new Product('generated-id', name, category, price, description, imageDataUri);
+            // Criar uma nova entidade Product
+            const product = new Product('generated-id', name, category, price, description, imageDataUri);
 
-        // Salvar o produto no repositório
-        const savedProduct = await this.productRepository.create(product);
+            // Salvar o produto no repositório
+            const savedProduct = await this.productRepository.create(product);
 
-        // Remover o arquivo de imagem temporário
-        fs.unlinkSync(imagePath);
+            // Remover o arquivo de imagem temporário
+            fs.unlinkSync(imagePath);
 
-        // Retornar o DTO do produto criado
-        return this.toDTO(savedProduct);
+            // Retornar o DTO do produto criado
+            return this.toDTO(savedProduct);
+        } catch (error: any) {
+            throw new Error(`Error creating product: ${error.message}`);
+        }
     }
 
     /**
@@ -44,7 +49,7 @@ export class CreateProductUseCase {
      */
     private toDTO(product: Product): ProductDTO {
         return {
-            id: product.id,
+            id: product._id,
             name: product.name,
             category: product.category,
             price: product.price,
