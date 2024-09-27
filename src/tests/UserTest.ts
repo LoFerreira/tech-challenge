@@ -3,7 +3,7 @@
 import { CreateUserUseCase } from "../core/use_cases/CreateUserUseCase";
 import { IUserRepository } from "../adapters/repositories/IUserRepository";
 import { User } from "../core/entities/User";
-import { beforeEach, describe, it } from "node:test";
+import { beforeEach, describe, it, expect } from "@jest/globals"; // Atualizado para Jest
 
 // Mock do repositório do usuário
 class MockUserRepository implements IUserRepository {
@@ -49,12 +49,11 @@ describe("User Use Cases", () => {
 
         it("deve lançar um erro se o nome estiver ausente", async () => {
             const userRequest = {
-                name: "João Silva",
                 cpf: "12345678901",
                 email: "joaosilva@example.com"
             };
 
-            await expect(createUserUseCase.execute(userRequest))
+            await expect(createUserUseCase.execute(userRequest as any))
                 .rejects
                 .toThrow("Name is required");
         });
@@ -62,11 +61,10 @@ describe("User Use Cases", () => {
         it("deve lançar um erro se o CPF estiver ausente", async () => {
             const userRequest = {
                 name: "João Silva",
-                cpf: "12345678901",
                 email: "joaosilva@example.com"
             };
 
-            await expect(createUserUseCase.execute(userRequest))
+            await expect(createUserUseCase.execute(userRequest as any))
                 .rejects
                 .toThrow("CPF is required");
         });
@@ -74,11 +72,10 @@ describe("User Use Cases", () => {
         it("deve lançar um erro se o email estiver ausente", async () => {
             const userRequest = {
                 name: "João Silva",
-                cpf: "12345678901",
-                email: "joaosilva@example.com"
+                cpf: "12345678901"
             };
 
-            await expect(createUserUseCase.execute(userRequest))
+            await expect(createUserUseCase.execute(userRequest as any))
                 .rejects
                 .toThrow("Email is required");
         });
