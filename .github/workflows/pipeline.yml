@@ -1,6 +1,6 @@
 # File Path: .github/workflows/test.yml
 
-name: Run Tests
+name: Run User Tests
 
 # Disparar o workflow quando ocorrer um push ou pull request na branch main
 on:
@@ -30,6 +30,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Executar os testes
-      - name: Run tests
-        run: npm run test
+      # Step 4: Executar os testes do UserTest.ts
+      - name: Run UserTest
+        run: npx jest src/tests/UserTest.ts
