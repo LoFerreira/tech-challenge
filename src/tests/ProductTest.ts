@@ -118,12 +118,8 @@ describe("Product Use Cases", () => {
                 mimetype: "image/png",
             };
 
-            // Executa o caso de uso de atualização
-            const updatedProduct = await updateProductUseCase.execute(
-                createdProduct.id,
-                updatedProductRequest,
-                updatedProductRequest
-            );
+            // Executa o caso de uso de atualização, passando apenas o `UpdateProductRequest`
+            const updatedProduct = await updateProductUseCase.execute(updatedProductRequest);
 
             // Verificações para garantir que o produto foi atualizado corretamente
             expect(updatedProduct).not.toBeNull();
@@ -143,11 +139,7 @@ describe("Product Use Cases", () => {
                 mimetype: "image/png",
             };
 
-            const updatedProduct = await updateProductUseCase.execute(
-                "inexistente-id",
-                updatedProductRequest,
-                updatedProductRequest
-            );
+            const updatedProduct = await updateProductUseCase.execute(updatedProductRequest);
 
             // Verifica se o retorno é null, indicando que o produto não foi encontrado
             expect(updatedProduct).toBeNull();

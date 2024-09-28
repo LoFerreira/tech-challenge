@@ -22,7 +22,8 @@ export class UpdateProductUseCase {
      * Converte a imagem para Base64, se houver, e retorna o produto atualizado como DTO.
      * Caso ocorra um erro durante a atualização ou leitura de imagem, será tratado aqui.
      */
-    async execute(p0: string, updatedProductData: { name: string; category: string; price: number; description: string; imagePath: string; mimetype: string; }, request: UpdateProductRequest): Promise<ProductDTO | null> {
+    async execute(request: UpdateProductRequest): Promise<ProductDTO | null> {
+        
         const { id, name, category, price, description, imagePath, mimetype } = request;
 
         const updateData: Partial<Product> = { name, category, price, description };
