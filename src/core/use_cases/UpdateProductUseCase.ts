@@ -23,6 +23,7 @@ export class UpdateProductUseCase {
      * Caso ocorra um erro durante a atualização ou leitura de imagem, será tratado aqui.
      */
     async execute(request: UpdateProductRequest): Promise<ProductDTO | null> {
+        
         const { id, name, category, price, description, imagePath, mimetype } = request;
 
         const updateData: Partial<Product> = { name, category, price, description };

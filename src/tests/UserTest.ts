@@ -34,9 +34,9 @@ describe("User Use Cases", () => {
     describe("CreateUserUseCase", () => {
         it("deve criar um usuário com sucesso", async () => {
             const userRequest = {
-                name: "João Silva",
+                name: "Bob Ferrer",
                 cpf: "12345678901",
-                email: "joaosilva@example.com"
+                email: "bob@example.com"
             };
 
             const result = await createUserUseCase.execute(userRequest);
@@ -50,7 +50,7 @@ describe("User Use Cases", () => {
         it("deve lançar um erro se o nome estiver ausente", async () => {
             const userRequest = {
                 cpf: "12345678901",
-                email: "joaosilva@example.com"
+                email: "bob@example.com"
             };
 
             await expect(createUserUseCase.execute(userRequest as any))
@@ -60,8 +60,8 @@ describe("User Use Cases", () => {
 
         it("deve lançar um erro se o CPF estiver ausente", async () => {
             const userRequest = {
-                name: "João Silva",
-                email: "joaosilva@example.com"
+                name: "Bob Ferrer",
+                email: "bob@example.com"
             };
 
             await expect(createUserUseCase.execute(userRequest as any))
@@ -71,7 +71,7 @@ describe("User Use Cases", () => {
 
         it("deve lançar um erro se o email estiver ausente", async () => {
             const userRequest = {
-                name: "João Silva",
+                name: "Bob Ferrer",
                 cpf: "12345678901"
             };
 
@@ -87,9 +87,9 @@ describe("User Use Cases", () => {
     describe("GetUserByCPFUseCase", () => {
         it("deve retornar um usuário pelo CPF", async () => {
             const userRequest = {
-                name: "Ana Souza",
+                name: "Leo Anj",
                 cpf: "98765432100",
-                email: "anasouza@example.com"
+                email: "leo@example.com"
             };
 
             // Criando o usuário primeiro
